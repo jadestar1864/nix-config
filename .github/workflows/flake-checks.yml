@@ -60,3 +60,14 @@ jobs:
             || contains(needs.*.result, 'cancelled')
             || contains(needs.*.result, 'skipped')
           }}
+  auto-approve-pr:
+    if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
+    needs: nix-build-results
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - run: gh pr review --approve "$PR_URL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
