@@ -1,0 +1,14 @@
+keys:
+  - &jaden E305DD83FAD97046634575BF66E3C3D45EA5C756
+  - &users
+    - &jaden_user age1hsfn62lep9qlxpa22u0shunsg3ymf3kq7gym0ujv43fndcpne4uslxx2t4
+  - &hosts:
+    - &asrock age1j73l6s7lhv646p752yftfz568e9yedjndfu45fmr7su04cwx74gsm0u4zd
+    - &thinkpadx1 age1xvh0vt6fev9syrvglf3hr2hppl4gzr3mrdu5dde0474pndvmwd9s7uamqc
+creation_rules:
+  - path_regex: ^secrets/jaden.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *jaden_user
