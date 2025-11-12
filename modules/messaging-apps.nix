@@ -4,6 +4,7 @@
       element-desktop
       protonmail-desktop
       signal-desktop
+      tutanota-desktop
       webcord
     ];
   };
