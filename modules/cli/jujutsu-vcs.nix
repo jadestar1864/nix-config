@@ -24,6 +24,10 @@
             tug = ["bookmark" "move" "main" "--to" "@"];
             "tug-" = ["bookmark" "move" "main" "--to" "@-"];
           };
+
+          git = {
+            sign-on-push = true;
+          };
         };
       }
     ];
