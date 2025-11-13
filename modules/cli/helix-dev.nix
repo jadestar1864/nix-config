@@ -15,6 +15,7 @@
             typescript-language-server
             superhtml
             vscode-langservers-extracted
+            svelte-language-server
           ];
           languages = {
             language = [
