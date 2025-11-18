@@ -45,6 +45,10 @@
                 name = "json";
                 language-servers = ["vscode-json-language-server"];
               }
+              {
+                name = "svelte";
+                language-servers = ["svelteserver"];
+              }
             ];
             language-server = {
               nixd = {
