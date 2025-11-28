@@ -140,11 +140,11 @@
     },
     "nixos-facter-modules": {
       "locked": {
-        "lastModified": 1762264948,
-        "narHash": "sha256-iaRf6n0KPl9hndnIft3blm1YTAyxSREV1oX0MFZ6Tk4=",
+        "lastModified": 1764252389,
+        "narHash": "sha256-3bbuneTKZBkYXlm0bE36kUjiDsasoIC1GWBw/UEJ9T4=",
         "owner": "numtide",
         "repo": "nixos-facter-modules",
-        "rev": "fa695bff9ec37fd5bbd7ee3181dbeb5f97f53c96",
+        "rev": "5ea68886d95218646d11d3551a476d458df00778",
         "type": "github"
       },
       "original": {
@@ -177,11 +177,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764218384,
-        "narHash": "sha256-hoz5vyZYwyER2xINpjszlOR78b5rcVwjGNcHIEJOUC0=",
+        "lastModified": 1764313051,
+        "narHash": "sha256-rVp6akomez+u4jDFoBbtnvk1o3i1Zb65MgoLdf99UVA=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "4d27c397f5c2afe4124a640e1019b5265d45c5c3",
+        "rev": "146f7518bbfbbf7dbe766efbfbdd4092d5ca4646",
         "type": "github"
       },
       "original": {
