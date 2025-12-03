@@ -145,7 +145,7 @@
             };
           };
         };
-        extensions.packages = withSystem pkgs.system ({inputs', ...}:
+        extensions.packages = withSystem pkgs.stdenv.hostPlatform.system ({inputs', ...}:
           with inputs'.nur.legacyPackages.repos.rycee.firefox-addons; [
             plasma-integration
             privacy-redirect

@@ -11,14 +11,11 @@
       {
         programs.git = {
           enable = true;
-          userName = config.flake.meta.owner.name;
-          userEmail = config.flake.meta.owner.email;
-          signing = {
-            format = "ssh";
-            key = "key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGCTyTIHe2iEPYrxakHv66Mr9CkIC9MP27jcXpes13mO";
-            signByDefault = true;
-          };
-          extraConfig = {
+          settings = {
+            user = {
+              name = config.flake.meta.owner.name;
+              email = config.flake.meta.owner.email;
+            };
             init.defaultBranch = "main";
             url = {
               "https://github.com/" = {
@@ -28,6 +25,11 @@
                 ];
               };
             };
+          };
+          signing = {
+            format = "ssh";
+            key = "key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGCTyTIHe2iEPYrxakHv66Mr9CkIC9MP27jcXpes13mO";
+            signByDefault = true;
           };
         };
       }

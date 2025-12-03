@@ -17,23 +17,38 @@
 
         programs.ssh = {
           enable = true;
-          # Avoids infinite hang if control socket connection interrupted. ex: vpn goes down/up
-          serverAliveCountMax = 3;
-          serverAliveInterval = 5; # 3 * 5s
-          matchBlocks = {
-            "gh-js" = {
-              hostname = "github.com";
-              user = "git";
-              identitiesOnly = true;
-              identityFile = "${pkgs.writeText "id_gh_access.pub" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOh1Nd4Va9xCaEb4evaiclAiHMX6aX8+vXgf+AzlTfbe"}";
-              identityAgent = "${homeArgs.config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
+          enableDefaultConfig = false;
+          matchBlocks = let
+            defaults = {
+              forwardAgent = false;
+              addKeysToAgent = "no";
+              compression = false;
+              serverAliveInterval = 5;
+              serverAliveCountMax = 3;
+              hashKnownHosts = false;
+              userKnownHostsFile = "~/.ssh/known_hosts";
+              controlMaster = "no";
+              controlPath = "~/.ssh/master-%r@%n:%p";
+              controlPersist = "no";
             };
-            "gh-mma" = {
-              hostname = "github.com";
-              user = "git";
-              identitiesOnly = true;
-              identityFile = homeArgs.config.sops.secrets."ssh_mma_github_rw_private_key".path;
-            };
+          in {
+            "gh-js" =
+              defaults
+              // {
+                hostname = "github.com";
+                user = "git";
+                identitiesOnly = true;
+                identityFile = "${pkgs.writeText "id_gh_access.pub" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOh1Nd4Va9xCaEb4evaiclAiHMX6aX8+vXgf+AzlTfbe"}";
+                identityAgent = "${homeArgs.config.home.homeDirectory}/.bitwarden-ssh-agent.sock";
+              };
+            "gh-mma" =
+              defaults
+              // {
+                hostname = "github.com";
+                user = "git";
+                identitiesOnly = true;
+                identityFile = homeArgs.config.sops.secrets."ssh_mma_github_rw_private_key".path;
+              };
           };
         };
       })
