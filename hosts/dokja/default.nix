@@ -89,7 +89,7 @@
 
         # Public cache URL (optional) - if exposed via https
         # Generates a landing page with usage instructions and public keys
-        # cacheUrl = "https://cache.example.com";
+        cacheUrl = "https://cache.jadestar.dev";
 
         # Nginx reverse proxy (optional)
         nginx = {

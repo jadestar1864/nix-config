@@ -9,15 +9,41 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v5
       - uses: wimpysworld/nothing-but-nix@main
         with:
           hatchet-protocol: 'holster'
       - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            extra-substituters = https://cache.jadestar.dev
+            extra-trusted-public-keys = niks3-1:H2ttivn8DTy6u7vuTwubki9ShBK8mbuY0LAc9ZUrrR4=
+      - name: Get OIDC token
+        id: oidc
+        run: |
+          token=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://niks3.jadestar.dev" | jq -r '.value')
+          echo "::add-mask::$token"
+          echo "token=$token" >> "$GITHUB_OUTPUT"
       - name: Build with nix-fast-build
         run: "nix run nixpkgs#nix-fast-build -- --no-nom --skip-cached --option accept-flake-config true"
+      - name: Push to cache
+        run: |
+          TMPFILE=$(mktemp)
+          trap 'rm -f "$TMPFILE"' EXIT
+          echo $NIKS3_AUTH_TOKEN > TMPFILE
+          curl -fsSL "https://github.com/Mic92/niks3/releases/latest/download/niks3_$(uname -s)_$(uname -m).tar.gz" | tar -xzf -
+          NIKS3_AUTH_TOKEN_FILE=$TMPFILE ./niks3 push \
+            --server-url https://niks3.jadestar.dev \
+            --auth-token "${{ steps.oidc.outputs.token }}" \
+            ./result
+        env:
+          NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_AUTH_TOKEN }}
   auto-approve-pr:
     if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
     needs: build
