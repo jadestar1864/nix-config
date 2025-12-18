@@ -6,32 +6,9 @@ on:
       - main
   pull_request:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  nix-matrix:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v5
-      - name: Install Nix
-        uses: DeterminateSystems/determinate-nix-action@v3
-      - id: set-matrix
-        name: Generate Nix Matrix
-        run: |
-          set -Eeu
-          matrix="$(nix eval --json '.#githubActions.matrix' --accept-flake-config)"
-          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-
-  nix-build:
-    name: ${{ matrix.name }} (${{ matrix.system }})
-    needs: nix-matrix
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix: ${{ fromJSON(needs.nix-matrix.outputs.matrix )}}
     steps:
       - uses: actions/checkout@v5
       - uses: wimpysworld/nothing-but-nix@main
@@ -39,30 +16,11 @@ jobs:
           hatchet-protocol: 'holster'
       - name: Install Nix
         uses: DeterminateSystems/determinate-nix-action@v3
-      - run: nix build -L '.#${{ matrix.attr }}' --accept-flake-config
-
-  nix-build-aggregate:
-    runs-on: ubuntu-latest
-    needs: nix-build
-    steps:
-      - run: exit 0
-
-  nix-build-results:
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    name: Nix Build Results
-    needs: [nix-build, nix-build-aggregate]
-    steps:
-      - run: exit 1
-        if: >-
-          ${{
-               contains(needs.*.result, 'failure')
-            || contains(needs.*.result, 'cancelled')
-            || contains(needs.*.result, 'skipped')
-          }}
+      - name: Build with nix-fast-build
+        run: "nix run nixpkgs#nix-fast-build -- --no-nom --skip-cached --option accept-flake-config true"
   auto-approve-pr:
     if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
-    needs: nix-build-results
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
