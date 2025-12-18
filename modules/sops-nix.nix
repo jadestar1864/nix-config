@@ -4,9 +4,12 @@
   ...
 }: {
   unify = {
-    nixos = {
+    nixos = {hostConfig, ...}: {
       imports = [inputs.sops-nix.nixosModules.sops];
-      sops.age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+      sops = {
+        age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+        defaultSopsFile = "${rootPath}/secrets/hosts/${hostConfig.name}.yml";
+      };
     };
     modules.dev.home = {
       config,
@@ -17,7 +20,7 @@
 
       sops = {
         age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-        defaultSopsFile = "${rootPath}/secrets/${hostConfig.primaryUser.username}.yml";
+        defaultSopsFile = "${rootPath}/secrets/users/${hostConfig.primaryUser.username}.yml";
       };
     };
   };

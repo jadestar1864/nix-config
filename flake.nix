@@ -64,6 +64,12 @@
       inputs.home-manager.follows = "home-manager";
       inputs.flake-parts.follows = "flake-parts";
     };
+
+    niks3 = {
+      url = "github:Mic92/niks3";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs = inputs:

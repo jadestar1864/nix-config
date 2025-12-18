@@ -4,8 +4,7 @@
       initrd.systemd.enable = true;
       loader = {
         systemd-boot.enable = lib.mkDefault true;
-        grub.efiSupport = true;
-        efi.canTouchEfiVariables = true;
+        efi.canTouchEfiVariables = lib.mkDefault true;
         timeout = 3;
       };
     };
