@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {
+  unify.modules.dev.home = {
     programs = {
       direnv = {
         enable = true;

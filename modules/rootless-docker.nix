@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.dev = {
+  unify.modules.dev.nixos = {
     virtualisation.docker = {
       enable = false;
       rootless = {

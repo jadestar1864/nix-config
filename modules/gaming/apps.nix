@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.gaming = {pkgs, ...}: {
+  unify.modules.gaming.home = {pkgs, ...}: {
     home.packages = with pkgs; [
       heroic
       prismlauncher

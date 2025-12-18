@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.hardening = {
+  unify.nixos = {
     boot.loader.systemd-boot.editor = false;
 
     boot.kernelParams = [

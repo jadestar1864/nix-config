@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.pc = {pkgs, ...}: let
+  unify.modules.pc.nixos = {pkgs, ...}: let
     mullvad-autostart = pkgs.makeAutostartItem {
       name = "mullvad-vpn";
       package = pkgs.mullvad-vpn;

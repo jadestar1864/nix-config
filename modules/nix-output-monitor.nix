@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base = {pkgs, ...}: {
-    environment.systemPackages = [pkgs.nix-output-monitor];
+  unify.modules.dev.home = {pkgs, ...}: {
+    home.packages = [pkgs.nix-output-monitor];
   };
 }

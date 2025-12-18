@@ -1,17 +1,18 @@
 {lib, ...}: {
-  flake.modules.nixos.disk-btrfs-on-luks = {config, ...}: {
+  unify.modules.disk-btrfs-on-luks.nixos = {hostConfig, ...}: {
     # Bind mount /var/tmp to /tmp
     fileSystems."/tmp" = {
       device = "/var/tmp";
       options = ["bind"];
     };
 
+    boot.loader.efi.efiSysMountPoint = "/efi";
     virtualisation.docker.storageDriver = "btrfs";
 
     disko.devices.disk = {
       disk0 = {
         type = "disk";
-        device = config.disk-layout.disk0;
+        device = hostConfig.disk-layout.disk0;
         content = {
           type = "gpt";
           partitions = {
@@ -33,7 +34,7 @@
                 type = "luks";
                 name = "crypted";
                 askPassword = true;
-                settings.allowDiscards = config.disk-layout.enableDiscards;
+                settings.allowDiscards = hostConfig.disk-layout.enableDiscards;
                 content = {
                   type = "btrfs";
                   extraArgs = ["-f"];
@@ -64,9 +65,9 @@
                       mountpoint = "/nix";
                       mountOptions = commonOpts;
                     };
-                    "/@swap" = lib.mkIf config.disk-layout.enableSwap {
+                    "/@swap" = lib.mkIf hostConfig.disk-layout.enableSwap {
                       mountpoint = "/swap";
-                      swap.swapfile.size = "${toString config.disk-layout.swapSize}G";
+                      swap.swapfile.size = "${toString hostConfig.disk-layout.swapSize}G";
                     };
                   };
                 };

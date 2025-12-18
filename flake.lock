@@ -226,6 +226,7 @@
         "nur": "nur",
         "plasma-manager": "plasma-manager",
         "sops-nix": "sops-nix",
+        "unify": "unify",
         "zsh-auto-notify": "zsh-auto-notify"
       }
     },
@@ -247,6 +248,32 @@
         "owner": "Mic92",
         "repo": "sops-nix",
         "type": "github"
+      }
+    },
+    "unify": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765403820,
+        "narHash": "sha256-3VJMOW8DOFgWerzUmOI5YiGA3auqW4ZbIDHNaqvLp0E=",
+        "ref": "refs/heads/main",
+        "rev": "35824b87edab3df89474b426a8fcbe02cb720504",
+        "revCount": 41,
+        "type": "git",
+        "url": "https://codeberg.org/quasigod/unify"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/quasigod/unify"
       }
     },
     "zsh-auto-notify": {

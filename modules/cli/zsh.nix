@@ -1,17 +1,17 @@
-{
-  config,
-  lib,
-  ...
-}: {
-  flake.modules = {
-    nixos.base = {pkgs, ...}: {
+{lib, ...}: {
+  unify.modules.dev = {
+    nixos = {
+      hostConfig,
+      pkgs,
+      ...
+    }: {
       programs.zsh.enable = true;
 
-      users.users.${config.flake.meta.owner.username}.shell = pkgs.zsh;
+      users.users.${hostConfig.primaryUser.username}.shell = pkgs.zsh;
     };
 
-    homeManager.base = {config, ...}: let
-      zsh = lib.getExe config.programs.zsh.package;
+    home = {pkgs, ...}: let
+      zsh = lib.getExe pkgs.zsh;
     in {
       programs.zsh = {
         enable = true;

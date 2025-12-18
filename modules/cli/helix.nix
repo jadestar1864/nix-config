@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {
+  unify.home = {
     programs.helix = {
       enable = true;
       settings = {

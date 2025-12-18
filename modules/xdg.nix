@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.base = {config, ...}: {
+  unify.home = {config, ...}: {
     home.preferXdgDirectories = true;
     xdg = {
       enable = true;

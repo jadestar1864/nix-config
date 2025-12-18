@@ -20,7 +20,7 @@
 
       experimental-features = ["nix-command" "flakes" "pipe-operators"];
     };
-    flake.modules = let
+    unify = let
       nix-attrs = nixosArgs: {
         nix = {
           inherit (config.nix) settings;
@@ -35,8 +35,8 @@
         };
       };
     in {
-      nixos.base = nix-attrs;
-      homeManager.base = nix-attrs;
+      nixos = nix-attrs;
+      home = nix-attrs;
     };
   };
 }

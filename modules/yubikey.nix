@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.pc = {pkgs, ...}: {
+  unify.modules.pc.nixos = {pkgs, ...}: {
     environment.systemPackages = with pkgs; [
       yubioath-flutter
       yubikey-manager

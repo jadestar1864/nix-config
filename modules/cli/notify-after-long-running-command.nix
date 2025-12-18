@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  flake.modules.homeManager.gui = {pkgs, ...}: {
+  unify.modules.dev.home = {pkgs, ...}: {
     home.packages = [pkgs.libnotify];
     programs.zsh = {
       initContent = lib.mkAfter ''

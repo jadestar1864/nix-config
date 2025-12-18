@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.gui = {pkgs, ...}: {
+  unify.modules.pc.home = {pkgs, ...}: {
     fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
       nerd-fonts.departure-mono
@@ -24,7 +24,7 @@
     };
   };
 
-  flake.modules.homeManager.desktop-plasma = {
+  unify.modules.desktop-plasma.home = {
     programs.plasma.shortcuts = {
       "services/Alacritty.desktop" = {
         _launch = "Meta+Q";

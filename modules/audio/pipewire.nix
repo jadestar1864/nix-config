@@ -1,6 +1,6 @@
 {
-  flake.modules = {
-    nixos.pc = {
+  unify.modules.pc = {
+    nixos = {
       services.pipewire = {
         enable = true;
         alsa = {
@@ -13,7 +13,7 @@
       security.rtkit.enable = true;
     };
 
-    homeManager.gui = {pkgs, ...}: {
+    home = {pkgs, ...}: {
       home.packages = with pkgs; [
         pwvucontrol
         qpwgraph

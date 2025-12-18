@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.base = {
+  unify.nixos = {
     zramSwap.enable = true;
   };
 }

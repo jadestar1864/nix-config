@@ -1,26 +1,23 @@
-{
-  lib,
-  config,
-  ...
-}: {
-  options.nixpkgs.allowedUnfreePackages = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = [];
+{lib, ...}: let
+  unfreeModule = {config, ...}: let
+    inherit (lib) mkOption types;
+  in {
+    options.nixpkgs.allowedUnfreePackages = mkOption {
+      type = types.listOf types.str;
+      default = [];
+    };
+
+    config = let
+      predicate = pkg: builtins.elem (lib.getName pkg) config.nixpkgs.allowedUnfreePackages;
+    in {
+      nixpkgs.config.allowUnfreePredicate = predicate;
+    };
   };
-
-  config = {
-    flake = {
-      modules = let
-        predicate = pkg: builtins.elem (lib.getName pkg) config.nixpkgs.allowedUnfreePackages;
-      in {
-        nixos.base.nixpkgs.config.allowUnfreePredicate = predicate;
-
-        homeManager.base = args: {
-          nixpkgs.config = lib.mkIf (!(args.hasGlobalPkgs or false)) {
-            allowUnfreePredicate = predicate;
-          };
-        };
-      };
+in {
+  unify = {
+    nixos.imports = [unfreeModule];
+    home = args: {
+      imports = lib.optional (!(args.hasGlobalPkgs or false)) unfreeModule;
     };
   };
 }

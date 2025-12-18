@@ -1,5 +1,5 @@
 {lib, ...}: {
-  flake.modules.nixos.hardening = {
+  unify.nixos = {
     services.openssh = {
       settings = {
         LogLevel = "INFO";

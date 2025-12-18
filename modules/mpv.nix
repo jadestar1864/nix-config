@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.gui = {pkgs, ...}: {
+  unify.modules.pc.home = {pkgs, ...}: {
     services.mpris-proxy.enable = true;
     programs.mpv = {
       enable = true;

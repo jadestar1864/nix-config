@@ -1,12 +1,11 @@
-{lib, ...}: {
-  flake.modules.nixos = {
-    hardening = {
+{
+  unify = {
+    nixos = {
       services.usbguard.enable = true;
     };
-
-    pc = {config, ...}: {
-      services.usbguard.dbus.enable = config.services.usbguard.enable;
-      security.polkit = lib.mkIf config.services.usbguard.enable {
+    modules.pc.nixos = {
+      services.usbguard.dbus.enable = true;
+      security.polkit = {
         extraConfig = ''
           polkit.addRule(function(action, subject) {
             if ((action.id == "org.usbguard.Policy1.listRules" ||

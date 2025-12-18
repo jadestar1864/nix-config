@@ -57,11 +57,24 @@
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    unify = {
+      url = "git+https://codeberg.org/quasigod/unify";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [(inputs.import-tree ./modules)];
+      imports = [
+        inputs.unify.flakeModule
+        (inputs.import-tree [
+          ./hosts
+          ./modules
+        ])
+      ];
       _module.args.rootPath = ./.;
     };
 }

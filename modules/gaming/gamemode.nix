@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.gaming = {
+  unify.modules.gaming.nixos = {
     programs.gamemode.enable = true;
   };
 }

@@ -1,7 +1,7 @@
-{config, ...}: {
-  flake.modules.nixos.base = {
+{
+  unify.nixos = {hostConfig, ...}: {
     security.sudo-rs.enable = true;
-    users.users.${config.flake.meta.owner.username}.extraGroups = [
+    users.users.${hostConfig.primaryUser.username}.extraGroups = [
       "wheel"
       "systemd-journal"
     ];

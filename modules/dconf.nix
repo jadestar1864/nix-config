@@ -1,3 +1,3 @@
 {
-  flake.modules.nixos.pc.programs.dconf.enable = true;
+  unify.modules.pc.nixos.programs.dconf.enable = true;
 }

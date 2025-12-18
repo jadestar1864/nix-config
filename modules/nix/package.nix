@@ -10,8 +10,8 @@
       |> lib.mkDefault;
   };
 in {
-  flake.modules = {
-    nixos.base = polyModule;
-    homeManager.base = polyModule;
+  unify = {
+    nixos = polyModule;
+    home = polyModule;
   };
 }
