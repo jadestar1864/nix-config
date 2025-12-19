@@ -56,11 +56,26 @@
       };
 
       sops.secrets = {
-        cloudflare_api_token_file = {};
-        r2_access_key = {};
-        r2_secret_key = {};
-        niks3_signing_key = {};
-        niks3_auth_token = {};
+        cloudflare_api_token_file = {
+          owner = nixosConfig.config.services.niks3.user;
+          group = nixosConfig.config.services.niks3.group;
+        };
+        r2_access_key = {
+          owner = nixosConfig.config.services.niks3.user;
+          group = nixosConfig.config.services.niks3.group;
+        };
+        r2_secret_key = {
+          owner = nixosConfig.config.services.niks3.user;
+          group = nixosConfig.config.services.niks3.group;
+        };
+        niks3_signing_key = {
+          owner = nixosConfig.config.services.niks3.user;
+          group = nixosConfig.config.services.niks3.group;
+        };
+        niks3_auth_token = {
+          owner = nixosConfig.config.services.niks3.user;
+          group = nixosConfig.config.services.niks3.group;
+        };
       };
 
       services = {
@@ -74,7 +89,7 @@
 
         # S3 configuration
         s3 = {
-          endpoint = "https://d453ef990b5969947e8dc16a0962cef8.r2.cloudflarestorage.com";
+          endpoint = "d453ef990b5969947e8dc16a0962cef8.r2.cloudflarestorage.com";
           bucket = "niks3";
           useSSL = true;
           accessKeyFile = nixosConfig.config.sops.secrets.r2_access_key.path;
