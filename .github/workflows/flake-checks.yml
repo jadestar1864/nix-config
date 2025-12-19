@@ -6,23 +6,42 @@ on:
       - main
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  nix-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - id: set-matrix
+        name: Generate Nix Matrix
+        run: |
+          set -Eeu
+          matrix="$(nix eval --json '.#githubActions.matrix' --accept-flake-config)"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+  nix-build:
+    name: ${{ matrix.name }} (${{ matrix.system }})
+    needs: nix-matrix
+    runs-on: ${{ matrix.os }}
     permissions:
-      contents: read
       id-token: write
+    strategy:
+      matrix: ${{ fromJSON(needs.nix-matrix.outputs.matrix )}}
     steps:
       - uses: actions/checkout@v5
       - uses: wimpysworld/nothing-but-nix@main
-        with:
-          hatchet-protocol: 'holster'
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             extra-substituters = https://cache.jadestar.dev
-            extra-trusted-public-keys = niks3-1:H2ttivn8DTy6u7vuTwubki9ShBK8mbuY0LAc9ZUrrR4=
+            extra-trusted-public-keys = cache.jadestar.dev-1:6nJfGkAZIQL8nj9kNzgXc1AJa+Eg/zv0YjZu8wX/aFM=
       - name: Get OIDC token
         id: oidc
         run: |
@@ -31,22 +50,42 @@ jobs:
           echo "::add-mask::$token"
           echo "token=$token" >> "$GITHUB_OUTPUT"
       - name: Build with nix-fast-build
-        run: "nix run nixpkgs#nix-fast-build -- --no-nom --skip-cached --option accept-flake-config true"
+        run: |
+          nix run nixpkgs#nix-fast-build -- \
+            --flake '.#${{ matrix.attr }}' \
+            --no-nom \
+            --skip-cached \
+            --max-jobs 1 \
+            --eval-max-memory-size 2048 \
+            --option accept-flake-config true
       - name: Push to cache
         run: |
-          TMPFILE=$(mktemp)
-          trap 'rm -f "$TMPFILE"' EXIT
-          echo $NIKS3_AUTH_TOKEN > TMPFILE
           curl -fsSL "https://github.com/Mic92/niks3/releases/latest/download/niks3_$(uname -s)_$(uname -m).tar.gz" | tar -xzf -
-          NIKS3_AUTH_TOKEN_FILE=$TMPFILE ./niks3 push \
+          ./niks3 push \
             --server-url https://niks3.jadestar.dev \
             --auth-token "${{ steps.oidc.outputs.token }}" \
-            ./result
-        env:
-          NIKS3_AUTH_TOKEN: ${{ secrets.NIKS3_AUTH_TOKEN }}
+            ./result-
+  nix-build-aggregate:
+    runs-on: ubuntu-latest
+    needs: nix-build
+    steps:
+      - run: exit 0
+  nix-build-results:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    name: Nix Build Results
+    needs: [nix-build, nix-build-aggregate]
+    steps:
+      - run: exit 1
+        if: >-
+          ${{
+               contains(needs.*.result, 'failure')
+            || contains(needs.*.result, 'cancelled')
+            || contains(needs.*.result, 'skipped')
+          }}
   auto-approve-pr:
     if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
-    needs: build
+    needs: nix-build-results
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

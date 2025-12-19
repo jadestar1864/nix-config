@@ -3,6 +3,8 @@
     abort-on-warn = true;
     extra-experimental-features = ["pipe-operators"];
     allow-import-from-derivation = false;
+    extra-substituters = ["https://cache.jadestar.dev"];
+    extra-trusted-public-keys = ["cache.jadestar.dev-1:6nJfGkAZIQL8nj9kNzgXc1AJa+Eg/zv0YjZu8wX/aFM="];
   };
 
   inputs = {

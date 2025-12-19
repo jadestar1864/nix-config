@@ -18,6 +18,9 @@
       auto-optimise-store = true;
       warn-dirty = false;
 
+      extra-substituters = ["https://cache.jadestar.dev"];
+      extra-trusted-public-keys = ["cache.jadestar.dev-1:6nJfGkAZIQL8nj9kNzgXc1AJa+Eg/zv0YjZu8wX/aFM="];
+
       experimental-features = ["nix-command" "flakes" "pipe-operators"];
     };
     unify = let
