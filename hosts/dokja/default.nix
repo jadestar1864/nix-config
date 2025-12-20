@@ -30,6 +30,10 @@
           "213.136.95.11"
           "2a02:c207::1:53"
         ];
+        firewall = {
+          allowedTCPPorts = [80 443];
+          allowedUDPPorts = [80 443];
+        };
       };
 
       boot.loader = {
