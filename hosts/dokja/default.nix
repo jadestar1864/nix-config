@@ -16,7 +16,7 @@
       swapSize = 2;
     };
 
-    nixos = nixosConfig: {
+    nixos = {pkgs, ...} @ nixosConfig: {
       imports = [inputs.niks3.nixosModules.niks3];
 
       system.stateVersion = "25.11";
@@ -61,8 +61,8 @@
 
       sops.secrets = {
         cloudflare_api_token_file = {
-          owner = nixosConfig.config.services.niks3.user;
-          group = nixosConfig.config.services.niks3.group;
+          owner = nixosConfig.config.services.caddy.user;
+          group = nixosConfig.config.services.caddy.group;
         };
         r2_access_key = {
           owner = nixosConfig.config.services.niks3.user;
@@ -112,7 +112,7 @@
 
         # Nginx reverse proxy (optional)
         nginx = {
-          enable = true;
+          enable = false;
           # Domain for the niks3 server, not for the binary cache.
           # This is used by `niks3 push`
           domain = "niks3.jadestar.dev";
@@ -126,24 +126,24 @@
           boundClaims = {
             repository_owner = ["jadestar1864"];
           };
+          boundSubject = ["repo:jadestar1864/*:*"];
         };
       };
 
-      security.acme = {
-        acceptTerms = true;
-        defaults.email = "proto@jadestar.dev";
-        certs = {
-          "niks3.jadestar.dev" = {
-            group = "nginx";
-            dnsProvider = "cloudflare";
-            # location of your CLOUDFLARE_DNS_API_TOKEN=[value]
-            # https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#EnvironmentFile=
-            environmentFile = nixosConfig.config.sops.secrets.cloudflare_api_token_file.path;
-          };
+      services.caddy = {
+        enable = true;
+        environmentFile = nixosConfig.config.sops.secrets.cloudflare_api_token_file.path;
+        package = pkgs.caddy.withPlugins {
+          plugins = ["github.com/caddy-dns/cloudflare@v0.2.2"];
+          hash = "sha256-dnhEjopeA0UiI+XVYHYpsjcEI6Y1Hacbi28hVKYQURg=";
         };
+        virtualHosts."niks3.jadestar.dev".extraConfig = ''
+          reverse_proxy http://127.0.0.1:5751
+          tls {
+            dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
+          }
+        '';
       };
-      # Use Cloudflare DNS challenge
-      services.nginx.virtualHosts."niks3.jadestar.dev".acmeRoot = null;
     };
   };
 }
