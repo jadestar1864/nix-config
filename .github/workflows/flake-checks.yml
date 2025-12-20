@@ -30,6 +30,7 @@ jobs:
     needs: nix-matrix
     runs-on: ${{ matrix.os }}
     permissions:
+      contents: read
       id-token: write
     strategy:
       matrix: ${{ fromJSON(needs.nix-matrix.outputs.matrix )}}
