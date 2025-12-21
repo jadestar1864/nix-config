@@ -23,13 +23,6 @@ jobs:
           extra_nix_config: |
             extra-substituters = https://cache.jadestar.dev
             extra-trusted-public-keys = cache.jadestar.dev-1:6nJfGkAZIQL8nj9kNzgXc1AJa+Eg/zv0YjZu8wX/aFM=
-      - name: Get OIDC token
-        id: oidc
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const token = await core.getIDToken("https://niks3.jadestar.dev");
-            core.setOutput("token", token);
       - name: Build with nix-fast-build
         run: |
           nix run nixpkgs#nix-fast-build -- \
@@ -38,6 +31,13 @@ jobs:
             --max-jobs 1 \
             --eval-max-memory-size 2048 \
             --option accept-flake-config true
+      - name: Get OIDC token
+        id: oidc
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const token = await core.getIDToken("https://niks3.jadestar.dev");
+            core.setOutput("token", token);
       - name: Push to cache
         run: |
           curl -fsSL "https://github.com/Mic92/niks3/releases/latest/download/niks3_$(uname -s)_$(uname -m).tar.gz" | tar -xzf -
