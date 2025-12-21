@@ -39,6 +39,7 @@ jobs:
           delete-branch: true
           body: Automatic update of flake inputs
       - name: "Enable auto-merge for PR"
+        if: ${{ steps.cpr.outputs.pull-request-number }}
         run: gh pr merge --auto --rebase "$PR_URL"
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
