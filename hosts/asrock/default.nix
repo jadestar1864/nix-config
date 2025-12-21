@@ -24,6 +24,8 @@
         hostName = "asrock";
       };
 
+      services.usbguard.enable = false;
+
       programs.gamemode.settings = {
         gpu = {
           apply_gpu_optimisations = "accept-responsibility";
