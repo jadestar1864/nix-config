@@ -82,7 +82,10 @@
         };
       };
 
-      services.openssh.enable = true;
+      services.openssh = {
+        enable = true;
+        settings.LogLevel = "VERBOSE";
+      };
 
       services.niks3 = {
         enable = true;

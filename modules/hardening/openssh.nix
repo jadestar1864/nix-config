@@ -2,7 +2,7 @@
   unify.nixos = {
     services.openssh = {
       settings = {
-        LogLevel = "INFO";
+        LogLevel = lib.mkDefault "INFO";
         Ciphers = [
           "aes128-ctr"
           "aes192-ctr"
