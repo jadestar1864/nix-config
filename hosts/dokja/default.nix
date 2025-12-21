@@ -82,10 +82,7 @@
         };
       };
 
-      services = {
-        openssh.enable = true;
-        fail2ban.enable = true;
-      };
+      services.openssh.enable = true;
 
       services.niks3 = {
         enable = true;
@@ -134,16 +131,45 @@
         enable = true;
         environmentFile = nixosConfig.config.sops.secrets.cloudflare_api_token_file.path;
         package = pkgs.caddy.withPlugins {
-          plugins = ["github.com/caddy-dns/cloudflare@v0.2.2"];
-          hash = "sha256-dnhEjopeA0UiI+XVYHYpsjcEI6Y1Hacbi28hVKYQURg=";
+          plugins = [
+            "github.com/caddy-dns/cloudflare@v0.2.2"
+            "github.com/caddyserver/transform-encoder@v0.0.0-20251203163749-3574c321422b"
+          ];
+          hash = "sha256-GLgzXr4KCYQyQWNAHaNqU2pIxHqZyGfizYTynhqbpHs=";
         };
-        virtualHosts."niks3.jadestar.dev".extraConfig = ''
-          reverse_proxy http://127.0.0.1:5751
-          tls {
-            dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
-          }
-        '';
+        virtualHosts."niks3.jadestar.dev" = {
+          logFormat = ''
+            format transform "{common_log}"
+            output file /var/log/niks3.jadestar.dev/access.log
+          '';
+          extraConfig = ''
+            reverse_proxy http://127.0.0.1:5751
+            tls {
+              dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
+            }
+          '';
+        };
       };
+
+      services.fail2ban = {
+        enable = true;
+        jails = {
+          caddyaccess.settings = {
+            filter = "caddy-access";
+            logpath = "/var/log/niks3.jadestar.dev/access.log";
+            port = "http,https";
+            maxretry = 5;
+            findtime = 30;
+            bantime = 600;
+          };
+        };
+      };
+
+      environment.etc."fail2ban/filter.d/caddy-access.conf".text = pkgs.lib.mkDefault (pkgs.lib.mkAfter ''
+        [Definition]
+        failregex = ^<HOST>.*"(GET|POST|OPTION).*" (4[0-9][0-9])[ \d]*$
+        ignoreregex =
+      '');
     };
   };
 }
