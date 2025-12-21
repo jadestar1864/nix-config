@@ -55,11 +55,6 @@
       url = "github:MichaelAquilina/zsh-auto-notify";
     };
 
-    nix-github-actions = {
-      url = "github:nix-community/nix-github-actions";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     unify = {
       url = "git+https://codeberg.org/quasigod/unify";
       inputs.nixpkgs.follows = "nixpkgs";
