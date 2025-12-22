@@ -15,7 +15,11 @@ in {
         };
       };
     };
-    nixos = {pkgs, ...}: {
+    nixos = {
+      config,
+      pkgs,
+      ...
+    }: {
       services = {
         timesyncd.enable = false;
         chrony = {
@@ -57,7 +61,7 @@ in {
         };
       };
 
-      systemd.tmpfiles.settings."restrict-chrony-conf"."/var/lib/chrony/chrony.keys".z.mode = "0400";
+      systemd.tmpfiles.settings."restrict-chrony-conf"."/var/lib/chrony/chrony.keys".z.mode = lib.mkIf config.services.chrony.enable "0400";
     };
   };
 }

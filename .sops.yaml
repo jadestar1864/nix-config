@@ -6,6 +6,7 @@ keys:
     - &asrock age1j73l6s7lhv646p752yftfz568e9yedjndfu45fmr7su04cwx74gsm0u4zd
     - &thinkpadx1 age1xvh0vt6fev9syrvglf3hr2hppl4gzr3mrdu5dde0474pndvmwd9s7uamqc
     - &dokja age19pguxlu4ga2nfvrga8jhz0p0qr632knut9w6qg8dh50uwe4d7qpqjdmrdx
+    - &teemo age1jztn2kejg09xsrxzf6nxm26wgpylxgq5wqjrnd5putgjd9w2yfps0wtjdm
 creation_rules:
   - path_regex: ^secrets/hosts/dokja.yml$
     key_groups:
@@ -13,3 +14,16 @@ creation_rules:
           - *jaden
         age:
           - *dokja
+  - path_regex: ^secrets/hosts/teemo.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *teemo
+  - path_regex: ^secrets/hosts/dokja-teemo.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *dokja
+          - *teemo
