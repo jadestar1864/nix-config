@@ -23,7 +23,7 @@
           partitions = {
             ESP = {
               size = "512M";
-              type = "EF00";
+              type = hostConfig.disk-layout.espPartitionType;
               content = {
                 type = "filesystem";
                 format = "vfat";
@@ -69,6 +69,7 @@
         name = "crypted";
         askPassword = true;
         settings.allowDiscards = hostConfig.disk-layout.enableDiscards;
+        extraFormatArgs = lib.mkIf (hostConfig.disk-layout.extraLuksFormatArgs != null) hostConfig.disk-layout.extraLuksFormatArgs;
         content = {
           type = "btrfs";
           extraArgs = ["-f"];
