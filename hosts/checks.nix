@@ -4,7 +4,12 @@
   ...
 }: {
   flake.checks =
-    config.flake.nixosConfigurations
+    [
+      "asrock"
+      "dokja"
+      "thinkpadx1"
+    ]
+    |> lib.flip lib.getAttrs config.flake.nixosConfigurations
     |> lib.mapAttrsToList (
       name: nixos: {
         ${nixos.config.nixpkgs.hostPlatform.system} = {
