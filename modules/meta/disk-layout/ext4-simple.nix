@@ -1,5 +1,5 @@
 {lib, ...}: {
-  unify.modules.disk-gpt-bios-compat.nixos = {hostConfig, ...}: {
+  unify.modules.disk-ext4-simple.nixos = {hostConfig, ...}: {
     disko.devices.disk = {
       disk0 = {
         type = "disk";
@@ -8,11 +8,15 @@
           type = "gpt";
           partitions = {
             boot = {
-              size = "1M";
-              type = "EF02"; # for grub MBR
+              size = "512M";
+              type = hostConfig.disk-layout.espPartitionType;
               content = {
                 type = "filesystem";
                 format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = [
+                  "umask=0077"
+                ];
               };
             };
             root = {

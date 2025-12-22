@@ -12,6 +12,16 @@ in {
           type = types.str;
           description = "The name of the second physical disk";
         };
+        espPartitionType = mkOption {
+          type = types.str;
+          description = "The partition type of the ESP partition";
+          default = "EF00";
+        };
+        extraLuksFormatArgs = mkOption {
+          type = types.nullOr (types.listOf types.str);
+          description = "Extra arguments for `cryptsetup luksFormat`";
+          default = null;
+        };
         enableSwap = mkEnableOption "swap";
         swapSize = mkOption {
           type = types.ints.positive;
