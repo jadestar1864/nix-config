@@ -24,6 +24,8 @@
         hostName = "asrock";
       };
 
+      boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
       services.usbguard.enable = false;
 
       programs.gamemode.settings = {
