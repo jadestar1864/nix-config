@@ -7,16 +7,9 @@ keys:
     - &thinkpadx1 age1xvh0vt6fev9syrvglf3hr2hppl4gzr3mrdu5dde0474pndvmwd9s7uamqc
     - &dokja age19pguxlu4ga2nfvrga8jhz0p0qr632knut9w6qg8dh50uwe4d7qpqjdmrdx
 creation_rules:
-  - path_regex: ^secrets/users/jaden.yml$
-    key_groups:
-      - pgp:
-          - *jaden
-        age:
-          - *jaden_user
   - path_regex: ^secrets/hosts/dokja.yml$
     key_groups:
       - pgp:
           - *jaden
         age:
-          - *jaden_user
           - *dokja
