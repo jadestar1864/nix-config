@@ -100,31 +100,25 @@ jobs:
             --server-url https://niks3.jadestar.dev \
             --auth-token "${{ steps.oidc.outputs.token }}" \
             ./result-
-  nix-build-aggregate:
-    runs-on: ubuntu-latest
-    needs: nix-build
-    steps:
-      - run: exit 0
   nix-build-results:
     runs-on: ubuntu-latest
     name: Nix Build Results
-    if: needs.pre_job_1.outputs.should_skip != 'true' && always()
-    needs: [nix-build, nix-build-aggregate, pre_job_1]
-    steps:
-      - run: exit 1
-        if: >-
-          ${{
-               contains(needs.*.result, 'failure')
-            || contains(needs.*.result, 'cancelled')
-          }}
-  auto-approve-pr:
-    if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
-    needs: nix-build-results
-    runs-on: ubuntu-latest
+    if: always()
     permissions:
       pull-requests: write
+    needs: [nix-build]
     steps:
-      - run: gh pr review --approve "$PR_URL"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
+      - run: exit 1
+        if: contains(fromJson('["cancelled", "failure"]'), needs.nix-build.result)
+      - name: Approve PR
+        uses: actions/github-script@v8
+        if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
+        with:
+          script: |
+            await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+            });
+
