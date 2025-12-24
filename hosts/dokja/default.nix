@@ -59,6 +59,19 @@
         linkConfig.RequiredForOnline = "routable";
       };
 
+      system.autoUpgrade = {
+        enable = true;
+        flake = "github:jadestar1864/nix-config";
+        flags = ["-L"];
+        dates = "09:00 UTC";
+        randomizedDelaySec = "45min";
+        allowReboot = true;
+        rebootWindow = {
+          lower = "10:00";
+          upper = "14:00";
+        };
+      };
+
       sops.secrets = {
         cloudflare_api_token_file = {
           owner = nixosConfig.config.services.caddy.user;
