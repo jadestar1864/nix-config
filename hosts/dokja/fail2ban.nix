@@ -3,9 +3,17 @@
     services.fail2ban = {
       enable = true;
       jails = {
-        caddyaccess.settings = {
+        niks3-caddyaccess.settings = {
           filter = "caddy-access";
           logpath = "/var/log/niks3.jadestar.dev/access.log";
+          port = "http,https";
+          maxretry = 5;
+          findtime = 30;
+          bantime = 600;
+        };
+        jellyfin-caddyaccess.settings = {
+          filter = "caddy-access";
+          logpath = "/var/log/jellyfin.jadestar.dev/access.log";
           port = "http,https";
           maxretry = 5;
           findtime = 30;

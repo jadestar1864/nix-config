@@ -59,29 +59,6 @@
         linkConfig.RequiredForOnline = "routable";
       };
 
-      sops.secrets = {
-        cloudflare_api_token_file = {
-          owner = nixosConfig.config.services.caddy.user;
-          group = nixosConfig.config.services.caddy.group;
-        };
-        r2_access_key = {
-          owner = nixosConfig.config.services.niks3.user;
-          group = nixosConfig.config.services.niks3.group;
-        };
-        r2_secret_key = {
-          owner = nixosConfig.config.services.niks3.user;
-          group = nixosConfig.config.services.niks3.group;
-        };
-        niks3_signing_key = {
-          owner = nixosConfig.config.services.niks3.user;
-          group = nixosConfig.config.services.niks3.group;
-        };
-        niks3_auth_token = {
-          owner = nixosConfig.config.services.niks3.user;
-          group = nixosConfig.config.services.niks3.group;
-        };
-      };
-
       services.openssh = {
         enable = true;
         settings.LogLevel = "VERBOSE";
