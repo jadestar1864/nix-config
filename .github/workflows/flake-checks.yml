@@ -95,11 +95,11 @@ jobs:
       - name: Push to cache
         if: steps.skip_check.outputs.should_skip != 'true'
         run: |
-          curl -fsSL "https://github.com/Mic92/niks3/releases/latest/download/niks3_$(uname -s)_$(uname -m).tar.gz" | tar -xzf -
-          ./niks3 push \
+          nix build -o niks3 github:Mic92/niks3
+          niks3/bin/niks3 push \
             --server-url https://niks3.jadestar.dev \
             --auth-token "${{ steps.oidc.outputs.token }}" \
-            ./result-
+            ./result- ./niks3
   nix-build-results:
     runs-on: ubuntu-latest
     name: Nix Build Results
