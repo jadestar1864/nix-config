@@ -66,6 +66,7 @@
     in {
       jellyfin = {
         image = "ghcr.io/linuxserver/jellyfin";
+        pull = "newer";
         environment = dockerUser "jellyfin";
         volumes = [
           "/var/lib/jellyfin:/config"
@@ -77,6 +78,7 @@
       };
       gluetun = {
         image = "qmcgaw/gluetun";
+        pull = "newer";
         capabilities = {
           NET_ADMIN = true;
           NET_RAW = true;
@@ -100,6 +102,7 @@
       };
       qbittorrent = {
         image = "ghcr.io/linuxserver/qbittorrent";
+        pull = "newer";
         environmentFiles = [
           config.sops.templates.qbittorrent_env_file.path
         ];
@@ -112,6 +115,7 @@
       };
       prowlarr = {
         image = "lscr.io/linuxserver/prowlarr:develop";
+        pull = "newer";
         environment =
           (dockerUser "prowlarr")
           // {
@@ -125,6 +129,7 @@
       };
       flaresolverr = {
         image = "ghcr.io/flaresolverr/flaresolverr";
+        pull = "newer";
         environment =
           (dockerUser "flaresolverr")
           // {
@@ -138,6 +143,7 @@
       };
       sonarr = {
         image = "ghcr.io/linuxserver/sonarr";
+        pull = "newer";
         environment = {
           PUID = toString config.users.users.sonarr.uid;
           PGID = toString config.users.groups.media.gid;
@@ -153,6 +159,7 @@
       };
       radarr = {
         image = "ghcr.io/linuxserver/radarr";
+        pull = "newer";
         environment = {
           PUID = toString config.users.users.radarr.uid;
           PGID = toString config.users.groups.media.gid;
