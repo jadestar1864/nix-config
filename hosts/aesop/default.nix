@@ -12,7 +12,11 @@
       swapSize = 4;
     };
 
-    nixos = {modulesPath, ...}: {
+    nixos = {
+      pkgs,
+      modulesPath,
+      ...
+    }: {
       imports = [
         "${modulesPath}/profiles/minimal.nix"
       ];
@@ -20,6 +24,11 @@
       services.openssh.enable = true;
       services.usbguard.enable = false;
       powerManagement.cpuFreqGovernor = "ondemand";
+
+      hardware.graphics = {
+        enable = true;
+        extraPackages = [pkgs.intel-media-driver];
+      };
 
       system.stateVersion = "25.11";
       facter.reportPath = ./facter.json;
