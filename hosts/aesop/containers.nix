@@ -14,7 +14,6 @@
       "sonarr"
       "radarr"
       "wizarr"
-      "nzbget"
     ];
     mediaFolders = [
       "Movies"
@@ -25,7 +24,6 @@
     sops.secrets = {
       gluetun_env = {};
       qbittorrent_env = {};
-      nzbget_env = {};
     };
 
     sops.templates = {
@@ -34,11 +32,8 @@
       '';
       qbittorrent_env_file.content = ''
         PUID=${toString config.users.users.qbittorrent.uid}
-        PGID=${toString config.users.groups.qbittorrent.gid}
+        PGID=${toString config.users.groups.media.gid}
         ${config.sops.placeholder.qbittorrent_env}
-      '';
-      nzbget_env_file.content = ''
-        ${config.sops.placeholder.nzbget_env}
       '';
     };
 
@@ -84,7 +79,7 @@
         devices = ["/dev/dri:/dev/dri"];
         volumes = [
           "/var/lib/jellyfin:/config"
-          "/media:/media"
+          "/data/media:/media"
         ];
         ports = [
           "8096:8096"
@@ -109,7 +104,6 @@
           "8191:8191"
           "8989:8989"
           "7878:7878"
-          "13060:13060"
           "6789:6789"
         ];
         volumes = [
@@ -119,12 +113,15 @@
       qbittorrent = {
         image = "ghcr.io/linuxserver/qbittorrent";
         pull = "newer";
+        environment = {
+          UMASK = "002";
+        };
         environmentFiles = [
           config.sops.templates.qbittorrent_env_file.path
         ];
         volumes = [
           "/var/lib/qbittorrent:/config"
-          "/qbittorrent-downloads:/downloads"
+          "/data/qbittorrent:/data/qbittorrent"
         ];
         networks = ["container:gluetun"];
         dependsOn = ["gluetun"];
@@ -167,8 +164,7 @@
         };
         volumes = [
           "/var/lib/sonarr:/config"
-          "/media/Shows:/shows"
-          "/qbittorrent-downloads:/downloads"
+          "/data:/data"
         ];
         networks = ["container:gluetun"];
         dependsOn = ["qbittorrent"];
@@ -183,8 +179,7 @@
         };
         volumes = [
           "/var/lib/radarr:/config"
-          "/media/Movies:/movies"
-          "/qbittorrent-downloads:/downloads"
+          "/data:/data"
         ];
         networks = ["container:gluetun"];
         dependsOn = ["qbittorrent"];
@@ -202,24 +197,6 @@
           "/var/lib/wizarr:/data"
         ];
       };
-      nzbget = {
-        image = "ghcr.io/linuxserver/nzbget";
-        pull = "newer";
-        environment =
-          (linuxserverUser "nzbget")
-          // {
-            TZ = "America/Chicago";
-          };
-        environmentFiles = [
-          config.sops.templates.nzbget_env_file.path
-        ];
-        volumes = [
-          "/var/lib/nzbget:/config"
-          "/nzbget-downloads:/downloads"
-        ];
-        networks = ["container:gluetun"];
-        dependsOn = ["gluetun"];
-      };
     };
 
     systemd.tmpfiles.settings."10-jellyfin-arr" = let
@@ -231,7 +208,13 @@
     in
       lib.listToAttrs (lib.flatten [
         {
-          name = "/qbittorrent-downloads";
+          name = "/data";
+          value = {
+            d = aclUser "root";
+          };
+        }
+        {
+          name = "/data/qbittorrent";
           value = {
             d = {
               user = toString config.users.users.qbittorrent.uid;
@@ -241,7 +224,7 @@
           };
         }
         {
-          name = "/qbittorrent-downloads/complete";
+          name = "/data/qbittorrent/complete";
           value = {
             d = {
               user = toString config.users.users.qbittorrent.uid;
@@ -251,7 +234,7 @@
           };
         }
         {
-          name = "/qbittorrent-downloads/incomplete";
+          name = "/data/qbittorrent/incomplete";
           value = {
             d = {
               user = toString config.users.users.qbittorrent.uid;
@@ -260,8 +243,10 @@
             };
           };
         }
+        /*
+        TODO: Future usenet directories
         {
-          name = "/nzbget-downloads";
+          name = "/data/usenet";
           value = {
             d = {
               user = toString config.users.users.nzbget.uid;
@@ -271,7 +256,7 @@
           };
         }
         {
-          name = "/nzbget-downloads/complete";
+          name = "/data/usenet/complete";
           value = {
             d = {
               user = toString config.users.users.nzbget.uid;
@@ -280,8 +265,19 @@
             };
           };
         }
+        (map (elem: {
+            name = "/data/usenet/complete/${elem}";
+            value = {
+              d = {
+                user = toString config.users.users.nzbget.uid;
+                group = toString config.users.groups.media.gid;
+                mode = "0775";
+              };
+            };
+          })
+          mediaFolders)
         {
-          name = "/nzbget-downloads/intermediate";
+          name = "/data/usenet/intermediate";
           value = {
             d = {
               user = toString config.users.users.nzbget.uid;
@@ -290,8 +286,9 @@
             };
           };
         }
+        */
         {
-          name = "/media";
+          name = "/data/media";
           value = {
             d = {
               user = toString config.users.users.jellyfin.uid;
@@ -301,7 +298,7 @@
           };
         }
         (map (elem: {
-            name = "/media/${elem}";
+            name = "/data/media/${elem}";
             value = {
               d = {
                 user = toString config.users.users.jellyfin.uid;

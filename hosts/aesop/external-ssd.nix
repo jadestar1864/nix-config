@@ -1,25 +1,18 @@
 {
   unify.hosts.nixos.aesop.nixos = {
-    config,
-    pkgs,
-    ...
-  }: {
     sops.secrets.external_ssd_key = {
       path = "/root/external_ssd.key";
     };
-    systemd.services.mount-media = {
-      enable = true;
-      wantedBy = ["multi-user.target"];
-      path = with pkgs; [cryptsetup mount];
-      restartIfChanged = false;
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      script = ''
-        cryptsetup luksOpen --key-file "${config.sops.secrets.external_ssd_key.path}" /dev/disk/by-uuid/a0ae2a60-be3f-45b6-b410-96bf0065bc30 media
-        mount /dev/mapper/media /media
-      '';
+    fileSystems."/data" = {
+      device = "/dev/mapper/media";
+      fsType = "ext4";
+      options = [
+        "nofail"
+        "x-systemd.device-timeout=0"
+      ];
     };
+    environment.etc.crypttab.text = ''
+      media UUID=a0ae2a60-be3f-45b6-b410-96bf0065bc30 /root/external_ssd.key nofail
+    '';
   };
 }
