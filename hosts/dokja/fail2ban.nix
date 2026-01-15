@@ -11,6 +11,7 @@
       "sonarr.jellyfin.jadestar.dev"
       "radarr.jellyfin.jadestar.dev"
       "wizarr.jellyfin.jadestar.dev"
+      "jellyseerr.jellyfin.jadestar.dev"
     ];
   in {
     services.fail2ban = {

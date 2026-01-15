@@ -52,7 +52,8 @@
         "prowlarr.jellyfin.jadestar.dev" = simpleRealIpRp "prowlarr.jellyfin.jadestar.dev" "10.169.0.5:9696";
         "sonarr.jellyfin.jadestar.dev" = simpleRealIpRp "sonarr.jellyfin.jadestar.dev" "10.169.0.5:8989";
         "radarr.jellyfin.jadestar.dev" = simpleRealIpRp "radarr.jellyfin.jadestar.dev" "10.169.0.5:7878";
-        "wizarr.jellyfin.jadestar.dev" = simpleRealIpRp "radarr.jellyfin.jadestar.dev" "10.169.0.5:5690";
+        "wizarr.jellyfin.jadestar.dev" = simpleRealIpRp "wizarr.jellyfin.jadestar.dev" "10.169.0.5:5690";
+        "jellyseerr.jellyfin.jadestar.dev" = simpleRealIpRp "jellyseerr.jellyfin.jadestar.dev" "10.169.0.5:5055";
       };
     };
   };

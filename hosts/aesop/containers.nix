@@ -14,6 +14,7 @@
       "sonarr"
       "radarr"
       "wizarr"
+      "jellyseerr"
     ];
     mediaFolders = [
       "Movies"
@@ -191,6 +192,24 @@
           };
         volumes = [
           "/var/lib/wizarr:/data"
+        ];
+      };
+      jellyseerr = {
+        image = "ghcr.io/fallenbagel/jellyseerr:latest";
+        pull = "newer";
+        user = "${toString config.users.users.jellyseerr.uid}:${toString config.users.groups.jellyseerr.gid}";
+        extraOptions = [
+          "--userns=keep-id"
+        ];
+        ports = [
+          "5055:5055"
+        ];
+        environment = {
+          PORT = "5055";
+          TZ = "America/Chicago";
+        };
+        volumes = [
+          "/var/lib/jellyseerr:/app/config"
         ];
       };
     };
