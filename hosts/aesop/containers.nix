@@ -14,6 +14,7 @@
       "sonarr"
       "radarr"
       "wizarr"
+      "nzbget"
     ];
     mediaFolders = [
       "Movies"
@@ -24,6 +25,7 @@
     sops.secrets = {
       gluetun_env = {};
       qbittorrent_env = {};
+      nzbget_env = {};
     };
 
     sops.templates = {
@@ -34,6 +36,9 @@
         PUID=${toString config.users.users.qbittorrent.uid}
         PGID=${toString config.users.groups.qbittorrent.gid}
         ${config.sops.placeholder.qbittorrent_env}
+      '';
+      nzbget_env_file.content = ''
+        ${config.sops.placeholder.nzbget_env}
       '';
     };
 
@@ -105,6 +110,7 @@
           "8989:8989"
           "7878:7878"
           "13060:13060"
+          "6789:6789"
         ];
         volumes = [
           "/var/lib/gluetun:/gluetun"
@@ -196,6 +202,24 @@
           "/var/lib/wizarr:/data"
         ];
       };
+      nzbget = {
+        image = "ghcr.io/linuxserver/nzbget";
+        pull = "newer";
+        environment =
+          (linuxserverUser "nzbget")
+          // {
+            TZ = "America/Chicago";
+          };
+        environmentFiles = [
+          config.sops.templates.nzbget_env_file.path
+        ];
+        volumes = [
+          "/var/lib/nzbget:/config"
+          "/nzbget-downloads:/downloads"
+        ];
+        networks = ["container:gluetun"];
+        dependsOn = ["gluetun"];
+      };
     };
 
     systemd.tmpfiles.settings."10-jellyfin-arr" = let
@@ -231,6 +255,36 @@
           value = {
             d = {
               user = toString config.users.users.qbittorrent.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
+          name = "/nzbget-downloads";
+          value = {
+            d = {
+              user = toString config.users.users.nzbget.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
+          name = "/nzbget-downloads/complete";
+          value = {
+            d = {
+              user = toString config.users.users.nzbget.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
+          name = "/nzbget-downloads/intermediate";
+          value = {
+            d = {
+              user = toString config.users.users.nzbget.uid;
               group = toString config.users.groups.media.gid;
               mode = "0775";
             };
