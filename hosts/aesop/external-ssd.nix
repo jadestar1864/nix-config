@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  unify.hosts.nixos.aesop.nixos = {
     config,
     pkgs,
     ...
@@ -17,7 +17,6 @@
         RemainAfterExit = true;
       };
       script = ''
-        mkdir -p /media
         cryptsetup luksOpen --key-file "${config.sops.secrets.external_ssd_key.path}" /dev/disk/by-uuid/a0ae2a60-be3f-45b6-b410-96bf0065bc30 media
         mount /dev/mapper/media /media
       '';

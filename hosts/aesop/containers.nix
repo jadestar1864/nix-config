@@ -1,9 +1,25 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  unify.hosts.nixos.aesop.nixos = {
     config,
     lib,
     ...
   }: let
+    # Changing the order will probably break a lot of things on an existing system
+    containerUsers = [
+      "gluetun"
+      "jellyfin"
+      "qbittorrent"
+      "prowlarr"
+      "flaresolverr"
+      "sonarr"
+      "radarr"
+      "wizarr"
+    ];
+    mediaFolders = [
+      "Movies"
+      "Music"
+      "Shows"
+    ];
   in {
     sops.secrets = {
       gluetun_env = {};
@@ -12,8 +28,6 @@
 
     sops.templates = {
       gluetun_env_file.content = ''
-        PUID=${toString config.users.users.gluetun.uid}
-        PGID=${toString config.users.groups.gluetun.gid}
         ${config.sops.placeholder.gluetun_env}
       '';
       qbittorrent_env_file.content = ''
@@ -24,18 +38,7 @@
     };
 
     # UIDs and GIDs are hardcoded so we can reference them elsewhere
-    users = let
-      # Changing the order will probably break a lot of things on an existing system
-      containerUsers = [
-        "jellyfin"
-        "gluetun"
-        "qbittorrent"
-        "prowlarr"
-        "flaresolverr"
-        "sonarr"
-        "radarr"
-      ];
-    in {
+    users = {
       groups = lib.listToAttrs ((lib.imap (index: elem: {
             name = elem;
             value = {gid = 10000 + index;};
@@ -59,24 +62,27 @@
     };
 
     virtualisation.oci-containers.containers = let
-      dockerUser = name: {
+      linuxserverUser = name: {
         PUID = toString config.users.users.${name}.uid;
         PGID = toString config.users.groups.${config.users.users.${name}.group}.gid;
       };
     in {
       jellyfin = {
         image = "ghcr.io/linuxserver/jellyfin";
-        environment = dockerUser "jellyfin";
+        pull = "newer";
+        environment = linuxserverUser "jellyfin";
         volumes = [
           "/var/lib/jellyfin:/config"
           "/media:/media"
         ];
         ports = [
           "8096:8096"
+          "5690:5690" # for wizarr on same container network
         ];
       };
       gluetun = {
         image = "qmcgaw/gluetun";
+        pull = "newer";
         capabilities = {
           NET_ADMIN = true;
           NET_RAW = true;
@@ -100,6 +106,7 @@
       };
       qbittorrent = {
         image = "ghcr.io/linuxserver/qbittorrent";
+        pull = "newer";
         environmentFiles = [
           config.sops.templates.qbittorrent_env_file.path
         ];
@@ -112,10 +119,11 @@
       };
       prowlarr = {
         image = "lscr.io/linuxserver/prowlarr:develop";
+        pull = "newer";
         environment =
-          (dockerUser "prowlarr")
+          (linuxserverUser "prowlarr")
           // {
-            TZ = "America/New_York";
+            TZ = "America/Chicago";
           };
         volumes = [
           "/var/lib/prowlarr:/config"
@@ -125,10 +133,11 @@
       };
       flaresolverr = {
         image = "ghcr.io/flaresolverr/flaresolverr";
+        pull = "newer";
         environment =
-          (dockerUser "flaresolverr")
+          (linuxserverUser "flaresolverr")
           // {
-            TZ = "America/New_York";
+            TZ = "America/Chicago";
           };
         volumes = [
           "/var/lib/flaresolverr:/config"
@@ -138,10 +147,11 @@
       };
       sonarr = {
         image = "ghcr.io/linuxserver/sonarr";
+        pull = "newer";
         environment = {
           PUID = toString config.users.users.sonarr.uid;
           PGID = toString config.users.groups.media.gid;
-          TZ = "America/New_York";
+          TZ = "America/Chicago";
         };
         volumes = [
           "/var/lib/sonarr:/config"
@@ -153,10 +163,11 @@
       };
       radarr = {
         image = "ghcr.io/linuxserver/radarr";
+        pull = "newer";
         environment = {
           PUID = toString config.users.users.radarr.uid;
           PGID = toString config.users.groups.media.gid;
-          TZ = "America/New_York";
+          TZ = "America/Chicago";
         };
         volumes = [
           "/var/lib/radarr:/config"
@@ -165,6 +176,19 @@
         ];
         networks = ["container:gluetun"];
         dependsOn = ["qbittorrent"];
+      };
+      wizarr = {
+        image = "ghcr.io/wizarrrr/wizarr";
+        pull = "newer";
+        networks = ["container:jellyfin"];
+        environment =
+          linuxserverUser "wizarr"
+          // {
+            TZ = "America/Chicago";
+          };
+        volumes = [
+          "/var/lib/wizarr:/data"
+        ];
       };
     };
 
@@ -187,6 +211,26 @@
           };
         }
         {
+          name = "/qbittorrent-downloads/complete";
+          value = {
+            d = {
+              user = toString config.users.users.qbittorrent.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
+          name = "/qbittorrent-downloads/incomplete";
+          value = {
+            d = {
+              user = toString config.users.users.qbittorrent.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
           name = "/media";
           value = {
             d = {
@@ -197,19 +241,23 @@
           };
         }
         (map (elem: {
+            name = "/media/${elem}";
+            value = {
+              d = {
+                user = toString config.users.users.jellyfin.uid;
+                group = toString config.users.groups.media.gid;
+                mode = "0775";
+              };
+            };
+          })
+          mediaFolders)
+        (map (elem: {
             name = "/var/lib/${elem}";
             value = {
               d = aclUser elem;
             };
-          }) [
-            "jellyfin"
-            "gluetun"
-            "qbittorrent"
-            "prowlarr"
-            "flaresolverr"
-            "sonarr"
-            "radarr"
-          ])
+          })
+          containerUsers)
       ]);
   };
 }

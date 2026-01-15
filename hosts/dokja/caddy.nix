@@ -48,10 +48,11 @@
             }
           '';
         };
-        "jellyfin.jadestar.dev" = simpleRealIpRp "jellyfin.jadestar.dev" "10.169.0.3:8096";
-        "prowlarr.jellyfin.jadestar.dev" = simpleRealIpRp "prowlarr.jellyfin.jadestar.dev" "10.169.0.3:9696";
-        "sonarr.jellyfin.jadestar.dev" = simpleRealIpRp "sonarr.jellyfin.jadestar.dev" "10.169.0.3:8989";
-        "radarr.jellyfin.jadestar.dev" = simpleRealIpRp "radarr.jellyfin.jadestar.dev" "10.169.0.3:7878";
+        "jellyfin.jadestar.dev" = simpleRealIpRp "jellyfin.jadestar.dev" "10.169.0.5:8096";
+        "prowlarr.jellyfin.jadestar.dev" = simpleRealIpRp "prowlarr.jellyfin.jadestar.dev" "10.169.0.5:9696";
+        "sonarr.jellyfin.jadestar.dev" = simpleRealIpRp "sonarr.jellyfin.jadestar.dev" "10.169.0.5:8989";
+        "radarr.jellyfin.jadestar.dev" = simpleRealIpRp "radarr.jellyfin.jadestar.dev" "10.169.0.5:7878";
+        "wizarr.jellyfin.jadestar.dev" = simpleRealIpRp "radarr.jellyfin.jadestar.dev" "10.169.0.5:5690";
       };
     };
   };

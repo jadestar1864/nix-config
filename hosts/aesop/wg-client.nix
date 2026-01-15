@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.dokja.nixos = {
+  unify.hosts.nixos.aesop.nixos = {
     config,
     pkgs,
     ...
@@ -10,16 +10,8 @@
         owner = "systemd-network";
         group = "systemd-network";
       };
-      teemo_preshared_key = {
-        sopsFile = ../../secrets/hosts/dokja-teemo.yml;
-        key = "wg_preshared_key";
-        mode = "640";
-        owner = "systemd-network";
-        group = "systemd-network";
-      };
-      aesop_preshared_key = {
+      wg_preshared_key = {
         sopsFile = ../../secrets/hosts/aesop-dokja.yml;
-        key = "wg_preshared_key";
         mode = "640";
         owner = "systemd-network";
         group = "systemd-network";
@@ -30,18 +22,13 @@
 
     networking.useNetworkd = true;
     networking.firewall.allowedUDPPorts = [51820];
-    networking.nat = {
-      enable = true;
-      externalInterface = "ens18";
-      internalInterfaces = ["wg0"];
-    };
+    networking.firewall.checkReversePath = "loose";
 
     systemd.network = {
       networks."50-wg0" = {
         matchConfig.Name = "wg0";
-        networkConfig.IPv4Forwarding = true;
 
-        address = ["10.169.0.1/24"];
+        address = ["10.169.0.5/32"];
       };
 
       netdevs."50-wg0" = {
@@ -60,14 +47,11 @@
 
         wireguardPeers = [
           {
-            PublicKey = "nJhCcdB6Pzu7eZdNm195JICttp8btDcrIJtamyR+uGw=";
-            PresharedKeyFile = config.sops.secrets.teemo_preshared_key.path;
-            AllowedIPs = ["10.169.0.3/32"];
-          }
-          {
-            PublicKey = "7YRBANxU4ZDUjWRKgDzSpQgY4QKIoKCh5tp1z+DpWkM=";
-            PresharedKeyFile = config.sops.secrets.aesop_preshared_key.path;
-            AllowedIPs = ["10.169.0.5/32"];
+            PublicKey = "pCwHRFMru2N8Gh/P3KZKcVdiOoqLFwJh3tKve/j8DwY=";
+            PresharedKeyFile = config.sops.secrets.wg_preshared_key.path;
+            AllowedIPs = ["10.169.0.1/32"];
+            Endpoint = "194.163.175.110:51820";
+            PersistentKeepalive = 25;
           }
         ];
       };
