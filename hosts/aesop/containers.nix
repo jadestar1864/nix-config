@@ -83,7 +83,6 @@
         ];
         ports = [
           "8096:8096"
-          "5690:5690" # for wizarr on same container network
         ];
       };
       gluetun = {
@@ -124,7 +123,6 @@
           "/data/qbittorrent:/data/qbittorrent"
         ];
         networks = ["container:gluetun"];
-        dependsOn = ["gluetun"];
       };
       prowlarr = {
         image = "lscr.io/linuxserver/prowlarr:develop";
@@ -138,7 +136,6 @@
           "/var/lib/prowlarr:/config"
         ];
         networks = ["container:gluetun"];
-        dependsOn = ["gluetun"];
       };
       flaresolverr = {
         image = "ghcr.io/flaresolverr/flaresolverr";
@@ -152,7 +149,6 @@
           "/var/lib/flaresolverr:/config"
         ];
         networks = ["container:gluetun"];
-        dependsOn = ["gluetun"];
       };
       sonarr = {
         image = "ghcr.io/linuxserver/sonarr";
@@ -167,7 +163,6 @@
           "/data:/data"
         ];
         networks = ["container:gluetun"];
-        dependsOn = ["qbittorrent"];
       };
       radarr = {
         image = "ghcr.io/linuxserver/radarr";
@@ -182,12 +177,13 @@
           "/data:/data"
         ];
         networks = ["container:gluetun"];
-        dependsOn = ["qbittorrent"];
       };
       wizarr = {
         image = "ghcr.io/wizarrrr/wizarr";
         pull = "newer";
-        networks = ["container:jellyfin"];
+        ports = [
+          "5690:5690"
+        ];
         environment =
           linuxserverUser "wizarr"
           // {
