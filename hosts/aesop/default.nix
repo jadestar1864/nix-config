@@ -12,7 +12,11 @@
       swapSize = 4;
     };
 
-    nixos = {modulesPath, ...}: {
+    nixos = {
+      pkgs,
+      modulesPath,
+      ...
+    }: {
       imports = [
         "${modulesPath}/profiles/minimal.nix"
       ];
@@ -20,6 +24,23 @@
       services.openssh.enable = true;
       services.usbguard.enable = false;
       powerManagement.cpuFreqGovernor = "ondemand";
+
+      hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [
+          intel-media-driver
+          vpl-gpu-rt
+          intel-compute-runtime
+        ];
+      };
+      hardware.enableRedistributableFirmware = true;
+      boot.kernelParams = [
+        "i915.force_probe=46d2"
+        "i915.enable_guc=3"
+      ];
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+      };
 
       system.stateVersion = "25.11";
       facter.reportPath = ./facter.json;

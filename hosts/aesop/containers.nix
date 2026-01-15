@@ -70,7 +70,13 @@
       jellyfin = {
         image = "ghcr.io/linuxserver/jellyfin";
         pull = "newer";
-        environment = linuxserverUser "jellyfin";
+        environment = {
+          PUID = toString config.users.users.jellyfin.uid;
+          PGID = toString config.users.groups.render.gid;
+          DOCKER_MODS = "linuxserver/mods:jellyfin-opencl-intel";
+          JELLYFIN_PublishedServerUrl = "https://jellyfin.jadestar.dev";
+        };
+        devices = ["/dev/dri:/dev/dri"];
         volumes = [
           "/var/lib/jellyfin:/config"
           "/media:/media"
