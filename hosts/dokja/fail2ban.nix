@@ -6,6 +6,7 @@
   }: let
     domains = [
       "niks3.jadestar.dev"
+      "ntfy.jadestar.dev"
       "jellyfin.jadestar.dev"
       "prowlarr.jellyfin.jadestar.dev"
       "sonarr.jellyfin.jadestar.dev"

@@ -20,6 +20,18 @@
         hash = "sha256-GLgzXr4KCYQyQWNAHaNqU2pIxHqZyGfizYTynhqbpHs=";
       };
       virtualHosts = let
+        simpleRp = domain: endpoint: {
+          logFormat = ''
+            format transform "{common_log}"
+            output file /var/log/${domain}/access.log
+          '';
+          extraConfig = ''
+            reverse_proxy http://
+            tls {
+              dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
+            }
+          '';
+        };
         simpleRealIpRp = domain: endpoint: {
           logFormat = ''
             format transform "{common_log}"
@@ -36,18 +48,8 @@
           '';
         };
       in {
-        "niks3.jadestar.dev" = {
-          logFormat = ''
-            format transform "{common_log}"
-            output file /var/log/niks3.jadestar.dev/access.log
-          '';
-          extraConfig = ''
-            reverse_proxy http://127.0.0.1:5751
-            tls {
-              dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
-            }
-          '';
-        };
+        "niks3.jadestar.dev" = simpleRp "niks3.jadestar.dev" "127.0.0.1:5751";
+        "ntfy.jadestar.dev" = simpleRealIpRp "ntfy.jadestar.dev" "10.169.0.5:2586";
         "jellyfin.jadestar.dev" = simpleRealIpRp "jellyfin.jadestar.dev" "10.169.0.5:8096";
         "prowlarr.jellyfin.jadestar.dev" = simpleRealIpRp "prowlarr.jellyfin.jadestar.dev" "10.169.0.5:9696";
         "sonarr.jellyfin.jadestar.dev" = simpleRealIpRp "sonarr.jellyfin.jadestar.dev" "10.169.0.5:8989";
