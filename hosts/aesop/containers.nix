@@ -16,6 +16,7 @@
       "wizarr"
       "jellyseerr"
       "bazarr"
+      "decluttarr"
     ];
     mediaFolders = [
       "Anime"
@@ -28,6 +29,7 @@
     sops.secrets = {
       gluetun_env = {};
       qbittorrent_env = {};
+      decluttarr_env = {};
     };
 
     sops.templates = {
@@ -231,6 +233,23 @@
         ];
         networks = ["container:gluetun"];
       };
+      decluttarr = {
+        image = "ghcr.io/manimatter/decluttarr:latest";
+        pull = "newer";
+        environment = {
+          PUID = toString config.users.users.decluttarr.uid;
+          PGID = toString config.users.groups.decluttarr.gid;
+          TZ = "America/Chicago";
+        };
+        environmentFiles = [
+          config.sops.secrets.decluttarr_env.path
+        ];
+        volumes = [
+          "/var/lib/decluttarr/logs:/app/logs"
+          "${./decluttarr-cfg.yml}:/app/config/config.yaml"
+          "/data/media:/data/media"
+        ];
+      };
     };
 
     systemd.tmpfiles.settings."10-jellyfin-arr" = let
@@ -349,6 +368,12 @@
             };
           })
           containerUsers)
+        {
+          name = "/var/lib/decluttarr/logs";
+          value = {
+            d = aclUser "decluttarr";
+          };
+        }
       ]);
   };
 }

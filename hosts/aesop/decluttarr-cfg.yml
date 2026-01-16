@@ -1,0 +1,30 @@
+general:
+  log_level: INFO
+  test_run: false
+  timer: 10
+jobs:
+  remove_bad_files:
+  remove_done_seeding:
+    target_tags:
+      - "Obsolete"
+  remove_failed_downloads:
+  remove_metadata_missing:
+    max_strikes: 3
+  remove_missing_files:
+  remove_orphans:
+  remove_unmonitored:
+  search_unmet_cutoff:
+  search_missing:
+  detect_deletions:
+instances:
+  sonarr:
+    - base_url: "http://host.containers.internal:8989/sonarr"
+      api_key: !ENV SONARR_API_KEY
+  radarr:
+    - base_url: "http://host.containers.internal:7878/radarr"
+      api_key: !ENV RADARR_API_KEY
+download_clients:
+  qbittorrent:
+    - base_url: "http://host.containers.internal:8080"
+      username: !ENV QBITTORRENT_USER
+      password: !ENV QBITTORRENT_PASS
