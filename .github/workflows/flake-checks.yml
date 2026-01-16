@@ -93,6 +93,7 @@ jobs:
             const token = await core.getIDToken("https://niks3.jadestar.dev");
             core.setOutput("token", token);
       - name: Push to cache
+        continue-on-error: true
         if: steps.skip_check.outputs.should_skip != 'true'
         run: |
           nix build -o niks3 github:Mic92/niks3
