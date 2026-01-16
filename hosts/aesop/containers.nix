@@ -30,6 +30,14 @@
       gluetun_env = {};
       qbittorrent_env = {};
       decluttarr_env = {};
+      cross_seed_cfg = {
+        # Why the hell do I gotta put API keys in such a stupid-ass huge pseudo code/config file?
+        # So many secrets littered about, I just shoved the entire THREE-HUNDRED FUCKING LINES
+        # into the sops secrets.
+        path = "/var/lib/cross-seed/config.js";
+        owner = "qbittorrent";
+        group = "media";
+      };
     };
 
     sops.templates = {
@@ -111,6 +119,7 @@
           "7878:7878"
           "6789:6789"
           "6767:6767"
+          "2468:2468"
         ];
         volumes = [
           "/var/lib/gluetun:/gluetun"
@@ -250,6 +259,20 @@
           "/data/media:/data/media"
         ];
       };
+      cross-seed = {
+        image = "ghcr.io/cross-seed/cross-seed:6";
+        pull = "newer";
+        user = "${toString config.users.users.qbittorrent.uid}:${toString config.users.groups.media.gid}";
+        environment = {
+          TZ = "America/Chicago";
+        };
+        cmd = ["daemon"];
+        volumes = [
+          "/var/lib/cross-seed:/config"
+          "/data/qbittorrent:/data/qbittorrent"
+        ];
+        networks = ["container:gluetun"];
+      };
     };
 
     systemd.tmpfiles.settings."10-jellyfin-arr" = let
@@ -259,6 +282,8 @@
         mode = "0755";
       };
     in
+      # Maybe TODO: change this list to an attr set of folder name and subfolders
+      # Perhaps cleaner
       lib.listToAttrs (lib.flatten [
         {
           name = "/data";
@@ -288,6 +313,26 @@
         }
         {
           name = "/data/qbittorrent/incomplete";
+          value = {
+            d = {
+              user = toString config.users.users.qbittorrent.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
+          name = "/data/qbittorrent/links";
+          value = {
+            d = {
+              user = toString config.users.users.qbittorrent.uid;
+              group = toString config.users.groups.media.gid;
+              mode = "0775";
+            };
+          };
+        }
+        {
+          name = "/var/lib/cross-seed";
           value = {
             d = {
               user = toString config.users.users.qbittorrent.uid;
