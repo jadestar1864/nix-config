@@ -15,6 +15,7 @@
       "radarr"
       "wizarr"
       "jellyseerr"
+      "bazarr"
     ];
     mediaFolders = [
       "Anime"
@@ -107,6 +108,7 @@
           "8989:8989"
           "7878:7878"
           "6789:6789"
+          "6767:6767"
         ];
         volumes = [
           "/var/lib/gluetun:/gluetun"
@@ -213,6 +215,21 @@
         volumes = [
           "/var/lib/jellyseerr:/app/config"
         ];
+      };
+      bazarr = {
+        image = "ghcr.io/linuxserver/bazarr";
+        pull = "newer";
+        environment = {
+          PUID = toString config.users.users.bazarr.uid;
+          PGID = toString config.users.groups.media.gid;
+          TZ = "America/Chicago";
+          UMASK = "002";
+        };
+        volumes = [
+          "/var/lib/bazarr:/config"
+          "/data/media:/data/media"
+        ];
+        networks = ["container:gluetun"];
       };
     };
 

@@ -65,6 +65,14 @@
             handle /radarr/* {
               ${realIp "10.169.0.5:7878"}
             }
+            handle /bazarr/* {
+              reverse_proxy http://10.169.0.5:6767 {
+                header_up X-Real-IP {http.request.remote}
+                header_up X-Forwarded-Proto {scheme}
+                header_up Upgrade {http.request.header.Upgrade}
+                header_up Connection "Upgrade"
+              }
+            }
             handle /* {
               ${realIp "10.169.0.5:8096"}
             }
