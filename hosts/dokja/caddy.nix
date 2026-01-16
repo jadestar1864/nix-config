@@ -34,8 +34,8 @@
         };
         realIp = endpoint: ''
           reverse_proxy http://${endpoint} {
-            header_down X-Real-IP {http.request.remote}
-            header_down X-Forwarded-For {http.request.remote}
+            header_up X-Real-IP {http.request.remote}
+            header_up X-Forwarded-Proto {scheme}
           }
         '';
         simpleRealIpRp = domain: endpoint: {
