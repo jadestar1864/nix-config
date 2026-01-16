@@ -17,6 +17,7 @@
       "jellyseerr"
     ];
     mediaFolders = [
+      "Books"
       "Movies"
       "Music"
       "Shows"
