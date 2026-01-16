@@ -26,22 +26,25 @@
             output file /var/log/${domain}/access.log
           '';
           extraConfig = ''
-            reverse_proxy http://
+            reverse_proxy http://${domain}
             tls {
               dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
             }
           '';
         };
+        realIp = endpoint: ''
+          reverse_proxy http://${endpoint} {
+            header_down X-Real-IP {http.request.remote}
+            header_down X-Forwarded-For {http.request.remote}
+          }
+        '';
         simpleRealIpRp = domain: endpoint: {
           logFormat = ''
             format transform "{common_log}"
             output file /var/log/${domain}/access.log
           '';
           extraConfig = ''
-            reverse_proxy http://${endpoint} {
-              header_down X-Real-IP {http.request.remote}
-              header_down X-Forwarded-For {http.request.remote}
-            }
+            ${realIp endpoint}
             tls {
               dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
             }
@@ -50,12 +53,28 @@
       in {
         "niks3.jadestar.dev" = simpleRp "niks3.jadestar.dev" "127.0.0.1:5751";
         "ntfy.jadestar.dev" = simpleRealIpRp "ntfy.jadestar.dev" "10.169.0.5:2586";
-        "jellyfin.jadestar.dev" = simpleRealIpRp "jellyfin.jadestar.dev" "10.169.0.5:8096";
-        "prowlarr.jellyfin.jadestar.dev" = simpleRealIpRp "prowlarr.jellyfin.jadestar.dev" "10.169.0.5:9696";
-        "sonarr.jellyfin.jadestar.dev" = simpleRealIpRp "sonarr.jellyfin.jadestar.dev" "10.169.0.5:8989";
-        "radarr.jellyfin.jadestar.dev" = simpleRealIpRp "radarr.jellyfin.jadestar.dev" "10.169.0.5:7878";
+        "jellyfin.jadestar.dev" = {
+          logFormat = ''
+            format transform "{common_log}"
+            output file /var/log/jellyfin.jadestar.dev/access.log
+          '';
+          extraConfig = ''
+            handle /sonarr/* {
+              ${realIp "10.169.0.5:8989"}
+            }
+            handle /radarr/* {
+              ${realIp "10.169.0.5:7878"}
+            }
+            handle /* {
+              ${realIp "10.169.0.5:8096"}
+            }
+            tls {
+              dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
+            }
+          '';
+        };
         "wizarr.jellyfin.jadestar.dev" = simpleRealIpRp "wizarr.jellyfin.jadestar.dev" "10.169.0.5:5690";
-        "jellyseerr.jellyfin.jadestar.dev" = simpleRealIpRp "jellyseerr.jellyfin.jadestar.dev" "10.169.0.5:5055";
+        "seerr.jellyfin.jadestar.dev" = simpleRealIpRp "seerr.jellyfin.jadestar.dev" "10.169.0.5:5055";
       };
     };
   };

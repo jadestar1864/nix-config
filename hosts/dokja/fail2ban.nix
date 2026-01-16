@@ -8,11 +8,8 @@
       "niks3.jadestar.dev"
       "ntfy.jadestar.dev"
       "jellyfin.jadestar.dev"
-      "prowlarr.jellyfin.jadestar.dev"
-      "sonarr.jellyfin.jadestar.dev"
-      "radarr.jellyfin.jadestar.dev"
       "wizarr.jellyfin.jadestar.dev"
-      "jellyseerr.jellyfin.jadestar.dev"
+      "seerr.jellyfin.jadestar.dev"
     ];
   in {
     services.fail2ban = {
