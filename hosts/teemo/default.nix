@@ -74,7 +74,7 @@
       powerManagement.cpuFreqGovernor = "ondemand";
 
       system.stateVersion = "25.11";
-      facter.reportPath = ./facter.json;
+      hardware.facter.reportPath = ./facter.json;
       networking = {
         networkmanager.enable = false;
         useDHCP = false;

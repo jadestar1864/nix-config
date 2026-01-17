@@ -23,7 +23,6 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";

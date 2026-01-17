@@ -19,7 +19,7 @@
     };
     nixos = {
       system.stateVersion = "25.05";
-      facter.reportPath = ./facter.json;
+      hardware.facter.reportPath = ./facter.json;
       networking = {
         hostName = "asrock";
       };
