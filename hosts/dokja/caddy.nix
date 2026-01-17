@@ -59,13 +59,13 @@
             output file /var/log/jellyfin.jadestar.dev/access.log
           '';
           extraConfig = ''
-            handle /sonarr/* {
+            handle /sonarr* {
               ${realIp "10.169.0.5:8989"}
             }
-            handle /radarr/* {
+            handle /radarr* {
               ${realIp "10.169.0.5:7878"}
             }
-            handle /bazarr/* {
+            handle /bazarr* {
               reverse_proxy http://10.169.0.5:6767 {
                 header_up X-Real-IP {http.request.remote}
                 header_up X-Forwarded-Proto {scheme}
