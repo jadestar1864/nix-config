@@ -17,6 +17,7 @@
       "jellyseerr"
       "bazarr"
       "decluttarr"
+      "profilarr"
     ];
     mediaFolders = [
       "Anime"
@@ -272,6 +273,20 @@
           "/data/qbittorrent:/data/qbittorrent"
         ];
         networks = ["container:gluetun"];
+      };
+      profilarr = {
+        image = "santiagosayshey/profilarr";
+        ports = [
+          "6868:6868"
+        ];
+        volumes = [
+          "/var/lib/profilarr:/config"
+        ];
+        environment = {
+          PUID = toString config.users.users.profilarr.uid;
+          PGID = toString config.users.groups.profilarr.gid;
+          TZ = "America/Chicago";
+        };
       };
     };
 
