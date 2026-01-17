@@ -35,7 +35,6 @@
         # Why the hell do I gotta put API keys in such a stupid-ass huge pseudo code/config file?
         # So many secrets littered about, I just shoved the entire THREE-HUNDRED FUCKING LINES
         # into the sops secrets.
-        path = "/var/lib/cross-seed/config.js";
         owner = "qbittorrent";
         group = "media";
       };
@@ -270,6 +269,7 @@
         cmd = ["daemon"];
         volumes = [
           "/var/lib/cross-seed:/config"
+          "${config.sops.secrets.cross_seed_cfg.path}:/config/config.js"
           "/data/qbittorrent:/data/qbittorrent"
         ];
         networks = ["container:gluetun"];
