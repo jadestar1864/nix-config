@@ -172,6 +172,7 @@
         environment = {
           PUID = toString config.users.users.sonarr.uid;
           PGID = toString config.users.groups.media.gid;
+          UMASK = "002";
           TZ = "America/Chicago";
         };
         volumes = [
@@ -186,6 +187,7 @@
         environment = {
           PUID = toString config.users.users.radarr.uid;
           PGID = toString config.users.groups.media.gid;
+          UMASK = "002";
           TZ = "America/Chicago";
         };
         volumes = [
