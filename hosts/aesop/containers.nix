@@ -19,6 +19,12 @@
       "decluttarr"
       "profilarr"
     ];
+    rootlessUsers = [
+      "decluttarr"
+      "jellyseerr"
+      "profilarr"
+      "wizarr"
+    ];
     mediaFolders = [
       "Anime"
       "Books"
@@ -30,7 +36,10 @@
     sops.secrets = {
       gluetun_env = {};
       qbittorrent_env = {};
-      decluttarr_env = {};
+      decluttarr_env = {
+        owner = "decluttarr";
+        group = "decluttarr";
+      };
       cross_seed_cfg = {
         # Why the hell do I gotta put API keys in such a stupid-ass huge pseudo code/config file?
         # So many secrets littered about, I just shoved the entire THREE-HUNDRED FUCKING LINES
@@ -64,22 +73,46 @@
             value = {gid = 10000;};
           }
         ]);
-      users = lib.listToAttrs (lib.imap (index: elem: {
+      users = lib.listToAttrs (lib.imap (index: elem: let
+          rootless = lib.elem elem rootlessUsers;
+        in {
           name = elem;
           value = {
             uid = 10000 + index;
             isSystemUser = true;
             group = elem;
+            home = "/data-home/${elem}";
+            createHome = true;
+            linger = rootless;
+            subUidRanges = lib.optionals rootless [
+              {
+                count = 65536;
+                startUid = 100000 + 65536 * (index - 1);
+              }
+            ];
+            subGidRanges = lib.optionals rootless [
+              {
+                count = 65536;
+                startGid = 100000 + 65536 * (index - 1);
+              }
+            ];
           };
         })
         containerUsers);
     };
+
+    networking.firewall.allowedTCPPorts = [
+      5055 # jellyseerr
+      5690 # wizarr
+      6868 # profilarr
+    ];
 
     virtualisation.oci-containers.containers = let
       linuxserverUser = name: {
         PUID = toString config.users.users.${name}.uid;
         PGID = toString config.users.groups.${config.users.users.${name}.group}.gid;
       };
+      rootlessUser = name: "${toString config.users.users.${name}.uid}:${toString config.users.groups.${name}.gid}";
     in {
       jellyfin = {
         image = "ghcr.io/linuxserver/jellyfin";
@@ -199,11 +232,27 @@
       wizarr = {
         image = "ghcr.io/wizarrrr/wizarr";
         pull = "newer";
+        # Wizarr uses `mkdir -p /etc/wizarr/wizarr_steps` which breaks starting the container as wizarr user
+        # https://github.com/wizarrrr/wizarr/blob/fae3c32426440a22c24aeee7c416c8799c73d5da/docker-entrypoint.sh#L84
+        #user = rootlessUser "wizarr";
+        podman = {
+          user = "wizarr";
+          sdnotify = "healthy";
+        };
+        extraOptions = [
+          "--health-cmd"
+          "curl http://localhost:5690 || exit 1"
+          "--health-start-period=20s"
+          "--health-timeout=3s"
+          "--health-interval=15s"
+          "--health-retries=3"
+          "--add-host=host.containers.internal:host-gateway"
+        ];
         ports = [
           "5690:5690"
         ];
         environment =
-          linuxserverUser "wizarr"
+          (linuxserverUser "wizarr")
           // {
             TZ = "America/Chicago";
           };
@@ -214,9 +263,19 @@
       jellyseerr = {
         image = "ghcr.io/fallenbagel/jellyseerr:latest";
         pull = "newer";
-        user = "${toString config.users.users.jellyseerr.uid}:${toString config.users.groups.jellyseerr.gid}";
+        user = rootlessUser "jellyseerr";
+        podman = {
+          user = "jellyseerr";
+          sdnotify = "healthy";
+        };
         extraOptions = [
           "--userns=keep-id"
+          "--health-cmd"
+          "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1"
+          "--health-start-period=20s"
+          "--health-timeout=3s"
+          "--health-interval=15s"
+          "--health-retries=3"
         ];
         ports = [
           "5055:5055"
@@ -247,11 +306,26 @@
       decluttarr = {
         image = "ghcr.io/manimatter/decluttarr:latest";
         pull = "newer";
-        environment = {
-          PUID = toString config.users.users.decluttarr.uid;
-          PGID = toString config.users.groups.decluttarr.gid;
-          TZ = "America/Chicago";
+        # Decluttarr can't enter as non-root for some reason
+        # PermissionError: [Errno 13] Permission denied: '/app/logs/logs.txt'
+        #user = rootlessUser "decluttarr";
+        podman = {
+          user = "decluttarr";
+          sdnotify = "healthy";
         };
+        extraOptions = [
+          "--health-cmd"
+          "pgrep -f main.py || exit 1"
+          "--health-interval=30s"
+          "--health-start-period=10s"
+          "--health-timeout=5s"
+          "--health-retries=3"
+        ];
+        environment =
+          (linuxserverUser "decluttarr")
+          // {
+            TZ = "America/Chicago";
+          };
         environmentFiles = [
           config.sops.secrets.decluttarr_env.path
         ];
@@ -260,6 +334,18 @@
           "${./decluttarr-cfg.yml}:/app/config/config.yaml"
           "/data/media:/data/media"
         ];
+        /*
+        I WOULD like this to start after the dependent services, but systemd just
+        gives me "Dependency failed" without any other explanation, so whatever the fuck's wrong with it
+        I no longer care. Plus, decluttarr seems to constantly keep checking for the other services
+        even after failing once.
+
+        dependsOn = [
+          "qbittorrent"
+          "sonarr"
+          "radarr"
+        ];
+        */
       };
       cross-seed = {
         image = "ghcr.io/cross-seed/cross-seed:6";
@@ -278,17 +364,34 @@
       };
       profilarr = {
         image = "santiagosayshey/profilarr";
+        pull = "newer";
+        # Can't directly use the --user flag since profilarr tries to create /home/apphome
+        # mkdir: cannot create directory ‘/home/appuser’: Permission denied
+        #user = rootlessUser "profilarr";
+        podman = {
+          user = "profilarr";
+          sdnotify = "healthy";
+        };
+        extraOptions = [
+          "--health-cmd"
+          "curl http://localhost:6868 || exit 1"
+          "--health-start-period=20s"
+          "--health-timeout=3s"
+          "--health-interval=15s"
+          "--health-retries=3"
+          "--add-host=host.containers.internal:host-gateway"
+        ];
         ports = [
           "6868:6868"
         ];
         volumes = [
           "/var/lib/profilarr:/config"
         ];
-        environment = {
-          PUID = toString config.users.users.profilarr.uid;
-          PGID = toString config.users.groups.profilarr.gid;
-          TZ = "America/Chicago";
-        };
+        environment =
+          linuxserverUser "profilarr"
+          // {
+            TZ = "America/Chicago";
+          };
       };
     };
 

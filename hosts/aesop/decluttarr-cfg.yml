@@ -3,7 +3,6 @@ general:
   test_run: false
   timer: 10
 jobs:
-  remove_bad_files:
   remove_done_seeding:
     target_tags:
       - "Obsolete"
