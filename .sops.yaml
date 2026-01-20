@@ -27,6 +27,12 @@ creation_rules:
           - *jaden
         age:
           - *teemo
+  - path_regex: ^hosts/teemo/actual.key$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *teemo
   - path_regex: ^secrets/hosts/aesop-dokja.yml$
     key_groups:
       - pgp:

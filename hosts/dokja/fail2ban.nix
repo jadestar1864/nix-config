@@ -10,6 +10,8 @@
       "jellyfin.jadestar.dev"
       "wizarr.jellyfin.jadestar.dev"
       "seerr.jellyfin.jadestar.dev"
+      "notes.jadestar.dev"
+      "actual.jadestar.dev"
     ];
   in {
     services.fail2ban = {

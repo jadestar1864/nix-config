@@ -8,6 +8,7 @@
       "aesop"
       "asrock"
       "dokja"
+      "teemo"
       "thinkpadx1"
     ]
     |> lib.flip lib.getAttrs config.flake.nixosConfigurations
