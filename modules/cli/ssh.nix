@@ -26,6 +26,14 @@
               identitiesOnly = true;
               identityFile = "${pkgs.writeText "id_gh_access.pub" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOh1Nd4Va9xCaEb4evaiclAiHMX6aX8+vXgf+AzlTfbe"}";
             };
+          "gl-js" =
+            defaults
+            // {
+              hostname = "gitlab.com";
+              user = "git";
+              identitiesOnly = true;
+              identityFile = "${pkgs.writeText "id_gl_access.pub" "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFtnhwtWOLdPNs9htdbxz7Vr/h8hMPLgP00ApjPACWVb"}";
+            };
         };
       };
     };
