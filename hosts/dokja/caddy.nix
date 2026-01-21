@@ -20,18 +20,6 @@
         hash = "sha256-GLgzXr4KCYQyQWNAHaNqU2pIxHqZyGfizYTynhqbpHs=";
       };
       virtualHosts = let
-        simpleRp = domain: endpoint: {
-          logFormat = ''
-            format transform "{common_log}"
-            output file /var/log/${domain}/access.log
-          '';
-          extraConfig = ''
-            reverse_proxy http://${domain}
-            tls {
-              dns cloudflare {env.CLOUDFLARE_DNS_API_TOKEN}
-            }
-          '';
-        };
         realIp = endpoint: ''
           reverse_proxy http://${endpoint} {
             header_up X-Real-IP {http.request.remote}
@@ -51,7 +39,7 @@
           '';
         };
       in {
-        "niks3.jadestar.dev" = simpleRp "niks3.jadestar.dev" "127.0.0.1:5751";
+        "niks3.jadestar.dev" = simpleRealIpRp "niks3.jadestar.dev" "127.0.0.1:5751";
         "ntfy.jadestar.dev" = simpleRealIpRp "ntfy.jadestar.dev" "10.169.0.5:2586";
         "jellyfin.jadestar.dev" = {
           logFormat = ''
