@@ -72,6 +72,11 @@
       url = "github:nix-community/nix-github-actions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    argononed = {
+      url = "gitlab:DarkElvenAngel/argononed";
+      flake = false;
+    };
   };
 
   outputs = inputs:
