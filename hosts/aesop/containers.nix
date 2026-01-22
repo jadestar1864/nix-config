@@ -241,7 +241,7 @@
         };
         extraOptions = [
           "--health-cmd"
-          "curl http://localhost:5690 || exit 1"
+          "curl --fail http://localhost:5690"
           "--health-start-period=20s"
           "--health-timeout=3s"
           "--health-interval=15s"
@@ -374,7 +374,7 @@
         };
         extraOptions = [
           "--health-cmd"
-          "curl http://localhost:6868 || exit 1"
+          "curl --fail http://localhost:6868"
           "--health-start-period=20s"
           "--health-timeout=3s"
           "--health-interval=15s"
