@@ -12,6 +12,7 @@
       "seerr.jellyfin.jadestar.dev"
       "notes.jadestar.dev"
       "actual.jadestar.dev"
+      "grafana.jadestar.dev"
     ];
   in {
     services.fail2ban = {
@@ -49,16 +50,28 @@
       ignoreregex =
     '');
 
-    systemd.tmpfiles.settings."10-caddy-logs" = lib.listToAttrs (map (elem: {
-        name = "/var/log/${elem}";
-        value = {
-          d = {
-            user = "caddy";
-            group = "caddy";
-            mode = "0755";
+    systemd.tmpfiles.settings."10-caddy-logs" = lib.listToAttrs (lib.flatten (map (elem: [
+        {
+          name = "/var/log/${elem}";
+          value = {
+            d = {
+              user = "caddy";
+              group = "caddy";
+              mode = "0755";
+            };
           };
-        };
-      })
-      domains);
+        }
+        {
+          name = "/var/log/${elem}/access.log";
+          value = {
+            f = {
+              user = "caddy";
+              group = "caddy";
+              mode = "0644";
+            };
+          };
+        }
+      ])
+      domains));
   };
 }

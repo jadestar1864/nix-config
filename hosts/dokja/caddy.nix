@@ -73,6 +73,7 @@
         "seerr.jellyfin.jadestar.dev" = simpleRealIpRp "seerr.jellyfin.jadestar.dev" "10.169.0.5:5055";
         "notes.jadestar.dev" = simpleRealIpRp "notes.jadestar.dev" "10.169.0.3:3000";
         "actual.jadestar.dev" = simpleRealIpRp "actual.jadestar.dev" "10.169.0.3:5006";
+        "grafana.jadestar.dev" = simpleRealIpRp "grafana.jadestar.dev" "10.169.0.3:2342";
       };
     };
   };
