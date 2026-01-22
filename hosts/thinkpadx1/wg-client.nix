@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.aesop.nixos = {
+  unify.hosts.nixos.thinkpadx1.nixos = {
     config,
     pkgs,
     ...
@@ -11,7 +11,7 @@
         group = "systemd-network";
       };
       wg_preshared_key = {
-        sopsFile = ../../secrets/hosts/aesop-dokja.yml;
+        sopsFile = ../../secrets/hosts/dokja-thinkpadx1.yml;
         mode = "640";
         owner = "systemd-network";
         group = "systemd-network";
@@ -28,7 +28,7 @@
       networks."50-wg0" = {
         matchConfig.Name = "wg0";
 
-        address = ["10.169.0.5/32"];
+        address = ["10.169.0.7/32"];
       };
 
       netdevs."50-wg0" = {

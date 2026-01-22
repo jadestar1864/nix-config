@@ -33,6 +33,12 @@ creation_rules:
           - *jaden
         age:
           - *teemo
+  - path_regex: ^secrets/hosts/thinkpadx1.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *thinkpadx1
   - path_regex: ^secrets/hosts/aesop-dokja.yml$
     key_groups:
       - pgp:
@@ -47,3 +53,10 @@ creation_rules:
         age:
           - *dokja
           - *teemo
+  - path_regex: ^secrets/hosts/dokja-thinkpadx1.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *dokja
+          - *thinkpadx1
