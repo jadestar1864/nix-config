@@ -63,6 +63,9 @@
         enable = true;
         settings.LogLevel = "VERBOSE";
       };
+      users.users.jaden.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOfH1O4AqStjq+hdCNSko0DzupT+0GeUnW7Zx7IFerc"
+      ];
     };
   };
 }

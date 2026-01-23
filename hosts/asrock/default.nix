@@ -36,5 +36,11 @@
         };
       };
     };
+    home = {
+      programs.ssh.matchBlocks = {
+        aesop.hostname = "192.168.1.5";
+        teemo.hostname = "192.168.1.3";
+      };
+    };
   };
 }

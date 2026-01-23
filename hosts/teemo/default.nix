@@ -62,6 +62,9 @@
       ];
 
       services.openssh.enable = true;
+      users.users.jaden.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFHZOOvZpYbDpCTbYlFXlG6nQiS88LV4Nak8hoJsTl8u"
+      ];
 
       # TODO: Use NTS on teemo
       # chrony will fail if time is too far offset on boot

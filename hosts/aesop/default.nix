@@ -22,6 +22,10 @@
       ];
 
       services.openssh.enable = true;
+      users.users.jaden.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBXcvbsXQen1xvAtTJX/12+s9QsYuR3bu61NkLRM9/eH"
+      ];
+
       services.usbguard.enable = false;
       powerManagement.cpuFreqGovernor = "ondemand";
 

@@ -60,3 +60,9 @@ creation_rules:
         age:
           - *dokja
           - *thinkpadx1
+  - path_regex: ^secrets/users/jaden.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *jaden_user
