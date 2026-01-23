@@ -11,7 +11,8 @@
           ];
         };
       };
-      nix.settings.trusted-users = [hostConfig.primaryUser.username];
+      # TODO: Create admin account to add here
+      #nix.settings.trusted-users = [hostConfig.primaryUser.username];
     };
   };
 }
