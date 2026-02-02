@@ -38,7 +38,7 @@
     };
     home = {
       programs.ssh.matchBlocks = {
-        aesop.hostname = "192.168.1.5";
+        aesop.hostname = "192.168.1.213";
         teemo.hostname = "192.168.1.3";
       };
     };
