@@ -77,6 +77,8 @@
       url = "gitlab:DarkElvenAngel/argononed";
       flake = false;
     };
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs = inputs:
