@@ -17,21 +17,6 @@
           isSystemUser = true;
           uid = 10002;
           group = "silverbullet";
-          linger = true;
-          home = "/data-home/silverbullet";
-          createHome = true;
-          subUidRanges = [
-            {
-              count = 65536;
-              startUid = 165536;
-            }
-          ];
-          subGidRanges = [
-            {
-              count = 65536;
-              startGid = 165536;
-            }
-          ];
         };
       };
       groups = {
@@ -62,9 +47,7 @@
       silverbullet = {
         image = "ghcr.io/silverbulletmd/silverbullet:latest";
         pull = "newer";
-        user = "silverbullet:silverbullet";
         podman = {
-          user = "silverbullet";
           sdnotify = "healthy";
         };
         extraOptions = [
@@ -79,7 +62,7 @@
           config.sops.templates.silverbullet_env_file.path
         ];
         volumes = [
-          "/data-home/silverbullet/space:/space"
+          "/space:/space"
         ];
         ports = [
           "3000:3000"
@@ -88,7 +71,7 @@
     };
 
     systemd.tmpfiles.settings."10-container-data" = {
-      "/data-home/silverbullet/space" = {
+      "/space" = {
         d = {
           mode = "0700";
           user = "silverbullet";
