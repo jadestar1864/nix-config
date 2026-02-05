@@ -11,6 +11,7 @@
       "wizarr.jellyfin.jadestar.dev"
       "seerr.jellyfin.jadestar.dev"
       "notes.jadestar.dev"
+      "journal.jadestar.dev"
       "actual.jadestar.dev"
       "grafana.jadestar.dev"
     ];

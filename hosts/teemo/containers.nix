@@ -1,14 +1,14 @@
 {
   unify.hosts.nixos.teemo.nixos = {config, ...}: {
     sops.secrets = {
-      silverbullet_user = {};
-    };
-    sops.templates.silverbullet_env_file = {
-      owner = "silverbullet";
-      group = "silverbullet";
-      content = ''
-        SB_USER=${config.sops.placeholder.silverbullet_user}
-      '';
+      silverbullet_env_file = {
+        owner = "silverbullet";
+        group = "silverbullet";
+      };
+      silverbullet_journal_env_file = {
+        owner = "silverbullet";
+        group = "silverbullet";
+      };
     };
 
     users = {
@@ -27,6 +27,7 @@
     networking.firewall.allowedTCPPorts = [
       5006 # actual
       3000 # silverbullet
+      3050 # silverbullet-journal
     ];
 
     virtualisation.oci-containers.containers = {
@@ -51,7 +52,6 @@
           sdnotify = "healthy";
         };
         extraOptions = [
-          "--userns=keep-id"
           "--health-cmd"
           "curl --fail http://localhost:3000/.ping || exit 1"
           "--health-timeout=3s"
@@ -59,7 +59,7 @@
           "--health-retries=3"
         ];
         environmentFiles = [
-          config.sops.templates.silverbullet_env_file.path
+          config.sops.secrets.silverbullet_env_file.path
         ];
         volumes = [
           "/space:/space"
@@ -68,10 +68,40 @@
           "3000:3000"
         ];
       };
+      silverbullet-journal = {
+        image = "ghcr.io/silverbulletmd/silverbullet:latest";
+        pull = "newer";
+        podman = {
+          sdnotify = "healthy";
+        };
+        extraOptions = [
+          "--health-cmd"
+          "curl --fail http://localhost:3000/.ping || exit 1"
+          "--health-timeout=3s"
+          "--health-interval=15s"
+          "--health-retries=3"
+        ];
+        environmentFiles = [
+          config.sops.secrets.silverbullet_journal_env_file.path
+        ];
+        volumes = [
+          "/my-journal:/space"
+        ];
+        ports = [
+          "3050:3000"
+        ];
+      };
     };
 
     systemd.tmpfiles.settings."10-container-data" = {
       "/space" = {
+        d = {
+          mode = "0700";
+          user = "silverbullet";
+          group = "silverbullet";
+        };
+      };
+      "/my-journal" = {
         d = {
           mode = "0700";
           user = "silverbullet";
