@@ -146,12 +146,7 @@
         ports = [
           # Open ports from other containers routing network through gluetun
           "8080:8080"
-          "9696:9696"
-          "8191:8191"
-          "8989:8989"
-          "7878:7878"
           "6789:6789"
-          "6767:6767"
           "2468:2468"
         ];
         volumes = [
@@ -184,7 +179,9 @@
         volumes = [
           "/var/lib/prowlarr:/config"
         ];
-        networks = ["container:gluetun"];
+        ports = [
+          "9696:9696"
+        ];
       };
       flaresolverr = {
         image = "ghcr.io/flaresolverr/flaresolverr";
@@ -197,7 +194,9 @@
         volumes = [
           "/var/lib/flaresolverr:/config"
         ];
-        networks = ["container:gluetun"];
+        ports = [
+          "8191:8191"
+        ];
       };
       sonarr = {
         image = "ghcr.io/linuxserver/sonarr";
@@ -212,7 +211,9 @@
           "/var/lib/sonarr:/config"
           "/data:/data"
         ];
-        networks = ["container:gluetun"];
+        ports = [
+          "8989:8989"
+        ];
       };
       radarr = {
         image = "ghcr.io/linuxserver/radarr";
@@ -227,7 +228,9 @@
           "/var/lib/radarr:/config"
           "/data:/data"
         ];
-        networks = ["container:gluetun"];
+        ports = [
+          "7878:7878"
+        ];
       };
       wizarr = {
         image = "ghcr.io/wizarrrr/wizarr";
@@ -301,7 +304,9 @@
           "/var/lib/bazarr:/config"
           "/data/media:/data/media"
         ];
-        networks = ["container:gluetun"];
+        ports = [
+          "6767:6767"
+        ];
       };
       decluttarr = {
         image = "ghcr.io/manimatter/decluttarr:latest";
@@ -320,6 +325,7 @@
           "--health-start-period=10s"
           "--health-timeout=5s"
           "--health-retries=3"
+          "--add-host=host.containers.internal:host-gateway"
         ];
         environment =
           (linuxserverUser "decluttarr")
