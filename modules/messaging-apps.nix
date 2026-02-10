@@ -30,6 +30,8 @@
         # https://github.com/flathub/com.discordapp.Discord/wiki/Rich-Precense-%28discord-rpc%29
         "L %t/discord-ipc-0 - - - - app/com.discordapp.Discord/discord-ipc-0"
       ];
+
+      services.arrpc.enable = true;
     };
     nixos = {
       # Need system-level flatpak for home-manager level flatpak
