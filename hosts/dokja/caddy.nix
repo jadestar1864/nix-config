@@ -17,7 +17,7 @@
           "github.com/caddy-dns/cloudflare@v0.2.2"
           "github.com/caddyserver/transform-encoder@v0.0.0-20251203163749-3574c321422b"
         ];
-        hash = "sha256-GLgzXr4KCYQyQWNAHaNqU2pIxHqZyGfizYTynhqbpHs=";
+        hash = "sha256-WWIpoDz2mqAvF7A8XK2Wx1HOTwEHG/S2SziW7XAWDmw=";
       };
       virtualHosts = let
         realIp = endpoint: ''
