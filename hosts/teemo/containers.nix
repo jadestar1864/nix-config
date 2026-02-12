@@ -109,5 +109,11 @@
         };
       };
     };
+
+    systemd.services = {
+      podman-actual.unitConfig.RequiresMountsFor = ["/actual"];
+      podman-silverbullet.unitConfig.RequiresMountsFor = ["/space"];
+      podman-silverbullet-journal.unitConfig.RequiresMountsFor = ["/my-journal"];
+    };
   };
 }
