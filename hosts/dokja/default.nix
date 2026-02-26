@@ -11,7 +11,7 @@
     users.jaden.modules = config.unify.hosts.nixos.dokja.modules;
 
     disk-layout = {
-      disk0 = "/dev/sda";
+      disk0 = "/dev/vda";
       enableSwap = true;
       swapSize = 2;
     };
@@ -26,9 +26,10 @@
         useDHCP = false;
         hostName = "dokja";
         nameservers = [
-          "213.136.95.10"
-          "213.136.95.11"
-          "2a02:c207::1:53"
+          "9.9.9.9"
+          "149.112.112.112"
+          "1.1.1.1"
+          "1.0.0.1"
         ];
         firewall = {
           allowedTCPPorts = [80 443];
@@ -47,14 +48,12 @@
 
       systemd.network.enable = true;
       systemd.network.networks."10-wan" = {
-        matchConfig.Name = "ens18";
+        matchConfig.Name = "ens6";
         address = [
-          "194.163.175.110/18"
-          "2a02:c207:2297:7046::1/64"
+          "66.179.137.242/24"
         ];
         routes = [
-          {Gateway = "194.163.128.1";}
-          {Gateway = "fe80::1";}
+          {Gateway = "66.179.137.1";}
         ];
         linkConfig.RequiredForOnline = "routable";
       };

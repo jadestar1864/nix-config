@@ -50,7 +50,7 @@
             PublicKey = "pCwHRFMru2N8Gh/P3KZKcVdiOoqLFwJh3tKve/j8DwY=";
             PresharedKeyFile = config.sops.secrets.wg_preshared_key.path;
             AllowedIPs = ["10.169.0.0/24"];
-            Endpoint = "194.163.175.110:51820";
+            Endpoint = "66.179.137.242:51820";
             PersistentKeepalive = 25;
           }
         ];

@@ -39,7 +39,7 @@
     home = {
       programs.ssh.matchBlocks = {
         aesop.hostname = "192.168.1.213";
-        dokja.hostname = "194.163.175.110";
+        dokja.hostname = "66.179.137.242";
         teemo.hostname = "192.168.1.3";
       };
     };
