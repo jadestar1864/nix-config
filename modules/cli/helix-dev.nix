@@ -14,6 +14,7 @@
         superhtml
         vscode-langservers-extracted
         svelte-language-server
+        rust-analyzer
       ];
       languages = {
         language = [
