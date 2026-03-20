@@ -18,7 +18,7 @@
       programs.pay-respects.enable = true;
       programs.starship = {
         enable = true;
-        settings = builtins.fromTOML (builtins.readFile ./gruvbox-rainbow.toml);
+        settings = builtins.fromTOML (builtins.readFile ../assets/gruvbox-rainbow.toml);
       };
     };
   };

@@ -5,8 +5,7 @@
         enable = true;
         publicKeys = [
           {
-            # TODO: Move public key file somewhere else
-            source = ./pgp.asc;
+            source = ../assets/pgp.asc;
             trust = 5;
           }
         ];

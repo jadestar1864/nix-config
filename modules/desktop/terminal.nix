@@ -11,7 +11,7 @@
       settings = {
         general = {
           import = [
-            ./base16_default_dark.toml
+            ../assets/base16_default_dark.toml
           ];
         };
         font = {
