@@ -24,12 +24,6 @@
       };
     };
 
-    networking.firewall.allowedTCPPorts = [
-      5006 # actual
-      3000 # silverbullet
-      3050 # silverbullet-journal
-    ];
-
     virtualisation.oci-containers.containers = {
       actual = {
         image = "actualbudget/actual-server:latest";

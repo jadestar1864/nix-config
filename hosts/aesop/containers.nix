@@ -101,12 +101,6 @@
         containerUsers);
     };
 
-    networking.firewall.allowedTCPPorts = [
-      5055 # jellyseerr
-      5690 # wizarr
-      6868 # profilarr
-    ];
-
     virtualisation.oci-containers.containers = let
       linuxserverUser = name: {
         PUID = toString config.users.users.${name}.uid;
