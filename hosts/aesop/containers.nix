@@ -102,9 +102,8 @@
     };
 
     networking.firewall.allowedTCPPorts = [
-      5055 # jellyseerr
-      5690 # wizarr
-      6868 # profilarr
+      5690 #wizarr
+      5055 #seerr
     ];
 
     virtualisation.oci-containers.containers = let

@@ -1,5 +1,5 @@
-{
-  unify.hosts.nixos.dokja.nixos = {config, ...}: {
+{inputs, ...}: {
+  unify.hosts.nixos.teemo.nixos = {config, ...}: {
     sops.secrets = {
       r2_access_key = {
         owner = config.services.niks3.user;
@@ -19,6 +19,9 @@
       };
     };
 
+    imports = [inputs.niks3.nixosModules.niks3];
+
+    networking.firewall.allowedTCPPorts = [5751];
     services.niks3 = {
       enable = true;
       httpAddr = "127.0.0.1:5751";

@@ -1,5 +1,10 @@
 {
-  unify.hosts.nixos.dokja.nixos = {config, ...}: {
+  unify.hosts.nixos.dokja.nixos = {
+    config,
+    lib,
+    ...
+  }: {
+    # SOPS secret for SWAG ACME certificate management
     sops.secrets.cloudflare_api_token_file = {
       owner = "swag";
       group = "swag";
@@ -10,9 +15,6 @@
         uid = 10000;
         group = "swag";
         isSystemUser = true;
-        home = "/data-home/swag";
-        createHome = true;
-        linger = true;
       };
       groups.swag.gid = 10000;
     };
@@ -25,7 +27,35 @@
           mode = "0755";
         };
       };
+      "/swag/nginx/site-confs" = {
+        d = {
+          user = "swag";
+          group = "swag";
+          mode = "0755";
+        };
+      };
     };
+
+    # Declarative nginx server blocks - dynamically load all .conf files
+    # Each nginx config file is in a separate file in this directory
+    systemd.tmpfiles.settings."10-swag-site-confs" = let
+      configFiles = builtins.attrNames (builtins.readDir ./swag-configs);
+      confFiles = builtins.filter (name: lib.hasSuffix ".conf" name) configFiles;
+    in
+      builtins.listToAttrs (map (file: {
+          name = "/swag/nginx/proxy-confs/${file}";
+          value = {
+            f = {
+              user = "swag";
+              group = "swag";
+              mode = "0644";
+              argument = builtins.readFile ./swag-configs/${file};
+            };
+          };
+        })
+        confFiles);
+
+    networking.firewall.allowedTCPPorts = [80 443];
 
     virtualisation.oci-containers.containers = {
       swag = {
@@ -36,10 +66,6 @@
         };
         volumes = [
           "/swag:/config"
-          # TODO: Provide SWAG reverse proxy confs declaratively
-          # Currently placed in directory imperatively
-          # Fails with symlink because s6 can't change permissions on the confs I think
-          #"${./swag-proxy-confs}:/config/nginx/proxy-confs"
           "${config.sops.secrets.cloudflare_api_token_file.path}:/config/dns-conf/cloudflare.ini"
         ];
         extraOptions = ["--network=host"];
@@ -52,6 +78,8 @@
           VALIDATION = "dns";
           DNSPLUGIN = "cloudflare";
           ONLY_SUBDOMAINS = "true";
+          EXTRA_DOMAINS = "*.jellyfin.jadestar.dev";
+          PROPAGATION = "30";
         };
       };
     };

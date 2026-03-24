@@ -1,34 +1,9 @@
 {
   unify.hosts.nixos.teemo.nixos = {config, ...}: {
     sops.secrets = {
-      silverbullet_env_file = {
-        owner = "silverbullet";
-        group = "silverbullet";
-      };
-      silverbullet_journal_env_file = {
-        owner = "silverbullet";
-        group = "silverbullet";
-      };
+      silverbullet_env_file = {};
+      silverbullet_journal_env_file = {};
     };
-
-    users = {
-      users = {
-        silverbullet = {
-          isSystemUser = true;
-          uid = 10002;
-          group = "silverbullet";
-        };
-      };
-      groups = {
-        silverbullet.gid = 10002;
-      };
-    };
-
-    networking.firewall.allowedTCPPorts = [
-      5006 # actual
-      3000 # silverbullet
-      3050 # silverbullet-journal
-    ];
 
     virtualisation.oci-containers.containers = {
       actual = {
@@ -90,23 +65,6 @@
         ports = [
           "3050:3000"
         ];
-      };
-    };
-
-    systemd.tmpfiles.settings."10-container-data" = {
-      "/space" = {
-        d = {
-          mode = "0700";
-          user = "silverbullet";
-          group = "silverbullet";
-        };
-      };
-      "/my-journal" = {
-        d = {
-          mode = "0700";
-          user = "silverbullet";
-          group = "silverbullet";
-        };
       };
     };
 

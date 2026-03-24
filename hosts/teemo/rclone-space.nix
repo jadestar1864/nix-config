@@ -41,8 +41,6 @@
           "allow_other"
           "args2env"
           "config=${config.sops.templates.rclone-space_file.path}"
-          "uid=${toString config.users.users.silverbullet.uid}"
-          "gid=${toString config.users.groups.silverbullet.gid}"
         ];
       };
       "/my-journal" = {
@@ -58,8 +56,6 @@
           "allow_other"
           "args2env"
           "config=${config.sops.templates.rclone-space_file.path}"
-          "uid=${toString config.users.users.silverbullet.uid}"
-          "gid=${toString config.users.groups.silverbullet.gid}"
         ];
       };
     };

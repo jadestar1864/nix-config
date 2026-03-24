@@ -1,8 +1,4 @@
-{
-  config,
-  inputs,
-  ...
-}: {
+{config, ...}: {
   unify.hosts.nixos.dokja = {
     modules = with config.unify.modules; [
       disk-gpt-bios-compat
@@ -17,8 +13,6 @@
     };
 
     nixos = nixosConfig: {
-      imports = [inputs.niks3.nixosModules.niks3];
-
       system.stateVersion = "25.11";
       hardware.facter.reportPath = ./facter.json;
       networking = {
@@ -31,10 +25,6 @@
           "1.1.1.1"
           "1.0.0.1"
         ];
-        firewall = {
-          allowedTCPPorts = [80 443];
-          allowedUDPPorts = [80 443];
-        };
       };
 
       boot.loader = {
