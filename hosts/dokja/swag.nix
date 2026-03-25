@@ -27,13 +27,6 @@
           mode = "0755";
         };
       };
-      "/swag/nginx/site-confs" = {
-        d = {
-          user = "swag";
-          group = "swag";
-          mode = "0755";
-        };
-      };
     };
 
     # Declarative nginx server blocks - dynamically load all .conf files
@@ -45,7 +38,7 @@
       builtins.listToAttrs (map (file: {
           name = "/swag/nginx/proxy-confs/${file}";
           value = {
-            f = {
+            "f+" = {
               user = "swag";
               group = "swag";
               mode = "0644";

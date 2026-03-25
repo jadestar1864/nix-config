@@ -21,7 +21,6 @@
     ];
     rootlessUsers = [
       "decluttarr"
-      "jellyseerr"
       "profilarr"
       "wizarr"
     ];
@@ -103,7 +102,6 @@
 
     networking.firewall.allowedTCPPorts = [
       5690 #wizarr
-      5055 #seerr
     ];
 
     virtualisation.oci-containers.containers = let
@@ -111,7 +109,6 @@
         PUID = toString config.users.users.${name}.uid;
         PGID = toString config.users.groups.${config.users.users.${name}.group}.gid;
       };
-      rootlessUser = name: "${toString config.users.users.${name}.uid}:${toString config.users.groups.${name}.gid}";
     in {
       jellyfin = {
         image = "ghcr.io/linuxserver/jellyfin";
@@ -262,34 +259,6 @@
           "/var/lib/wizarr:/data"
         ];
       };
-      jellyseerr = {
-        image = "ghcr.io/fallenbagel/jellyseerr:latest";
-        pull = "newer";
-        user = rootlessUser "jellyseerr";
-        podman = {
-          user = "jellyseerr";
-          sdnotify = "healthy";
-        };
-        extraOptions = [
-          "--userns=keep-id"
-          "--health-cmd"
-          "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1"
-          "--health-start-period=20s"
-          "--health-timeout=3s"
-          "--health-interval=15s"
-          "--health-retries=3"
-        ];
-        ports = [
-          "5055:5055"
-        ];
-        environment = {
-          PORT = "5055";
-          TZ = "America/Chicago";
-        };
-        volumes = [
-          "/var/lib/jellyseerr:/app/config"
-        ];
-      };
       bazarr = {
         image = "ghcr.io/linuxserver/bazarr";
         pull = "newer";
@@ -368,7 +337,7 @@
         networks = ["container:gluetun"];
       };
       profilarr = {
-        image = "santiagosayshey/profilarr";
+        image = "santiagosayshey/profilarr:latest";
         pull = "newer";
         # Can't directly use the --user flag since profilarr tries to create /home/apphome
         # mkdir: cannot create directory ‘/home/appuser’: Permission denied
@@ -379,7 +348,7 @@
         };
         extraOptions = [
           "--health-cmd"
-          "curl --fail http://localhost:6868"
+          "curl -sf http://localhost:6868 || exit 1"
           "--health-start-period=20s"
           "--health-timeout=3s"
           "--health-interval=15s"

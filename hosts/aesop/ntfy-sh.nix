@@ -1,5 +1,7 @@
 {
   unify.hosts.nixos.aesop.nixos = {
+    networking.firewall.allowedTCPPorts = [2586];
+
     services.ntfy-sh = {
       enable = true;
       settings = {
