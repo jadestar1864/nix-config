@@ -4,10 +4,20 @@
     lib,
     ...
   }: {
-    # SOPS secret for SWAG ACME certificate management
-    sops.secrets.cloudflare_api_token_file = {
-      owner = "swag";
-      group = "swag";
+    sops.secrets = {
+      # SOPS secret for SWAG ACME certificate management
+      cloudflare_api_token_file = {
+        owner = "swag";
+        group = "swag";
+      };
+      notes_htpasswd = {
+        owner = "swag";
+        group = "swag";
+      };
+      journal_htpasswd = {
+        owner = "swag";
+        group = "swag";
+      };
     };
 
     users = {
@@ -60,6 +70,8 @@
         volumes = [
           "/swag:/config"
           "${config.sops.secrets.cloudflare_api_token_file.path}:/config/dns-conf/cloudflare.ini"
+          "${config.sops.secrets.notes_htpasswd.path}:/config/nginx/notes.htpasswd"
+          "${config.sops.secrets.journal_htpasswd.path}:/config/nginx/journal.htpasswd"
         ];
         extraOptions = ["--network=host"];
         environment = {

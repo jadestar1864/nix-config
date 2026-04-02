@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {config, ...}: {
+  unify.hosts.nixos.teemo.nixos = {
     sops.secrets = {
       silverbullet_env_file = {};
       silverbullet_journal_env_file = {};
@@ -33,9 +33,6 @@
           "--health-interval=15s"
           "--health-retries=3"
         ];
-        environmentFiles = [
-          config.sops.secrets.silverbullet_env_file.path
-        ];
         volumes = [
           "/space:/space"
         ];
@@ -55,9 +52,6 @@
           "--health-timeout=3s"
           "--health-interval=15s"
           "--health-retries=3"
-        ];
-        environmentFiles = [
-          config.sops.secrets.silverbullet_journal_env_file.path
         ];
         volumes = [
           "/my-journal:/space"

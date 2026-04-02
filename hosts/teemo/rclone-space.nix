@@ -10,8 +10,6 @@
       journal_enc_salt = {};
     };
     sops.templates.rclone-space_file = {
-      owner = "silverbullet";
-      group = "silverbullet";
       content = ''
         [remote]
         type = pcloud
