@@ -21,7 +21,7 @@
         ];
       };
       silverbullet = {
-        image = "ghcr.io/silverbulletmd/silverbullet:latest";
+        image = "ghcr.io/silverbulletmd/silverbullet:v2";
         pull = "newer";
         podman = {
           sdnotify = "healthy";
@@ -41,7 +41,7 @@
         ];
       };
       silverbullet-journal = {
-        image = "ghcr.io/silverbulletmd/silverbullet:latest";
+        image = "ghcr.io/silverbulletmd/silverbullet:v2";
         pull = "newer";
         podman = {
           sdnotify = "healthy";
