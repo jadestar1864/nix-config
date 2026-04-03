@@ -1,18 +1,39 @@
-{
+{rootPath, ...}: {
   unify = {
-    nixos = {hostConfig, ...}: {
+    nixos = {
+      hostConfig,
+      config,
+      ...
+    }: {
+      sops.secrets.admin_password = {
+        neededForUsers = true;
+        sopsFile = "${rootPath}/secrets/hosts/shared.yml";
+      };
+
       users = {
-        groups.${hostConfig.primaryUser.username} = {};
-        users.${hostConfig.primaryUser.username} = {
-          isNormalUser = true;
-          initialPassword = hostConfig.primaryUser.username;
-          extraGroups = [
-            "input"
-          ];
+        groups = {
+          ${hostConfig.primaryUser.username} = {};
+          admin = {};
+        };
+        users = {
+          ${hostConfig.primaryUser.username} = {
+            isNormalUser = true;
+            initialPassword = hostConfig.primaryUser.username;
+            extraGroups = [
+              "input"
+            ];
+          };
+          admin = {
+            isNormalUser = true;
+            group = "admin";
+            hashedPasswordFile = config.sops.secrets.admin_password.path;
+            extraGroups = [
+              "input"
+            ];
+          };
         };
       };
-      # TODO: Create admin account to add here
-      #nix.settings.trusted-users = [hostConfig.primaryUser.username];
+      nix.settings.trusted-users = ["admin"];
     };
   };
 }

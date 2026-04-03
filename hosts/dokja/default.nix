@@ -52,9 +52,14 @@
         enable = true;
         settings.LogLevel = "VERBOSE";
       };
-      users.users.jaden.openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOfH1O4AqStjq+hdCNSko0DzupT+0GeUnW7Zx7IFerc"
-      ];
+      users.users = {
+        jaden.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOfH1O4AqStjq+hdCNSko0DzupT+0GeUnW7Zx7IFerc"
+        ];
+        admin.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILB398NyGF03Sf811vdV0WtCPnAR1vwmCti2iqoMMJI3"
+        ];
+      };
     };
   };
 }

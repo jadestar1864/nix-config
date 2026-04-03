@@ -9,6 +9,16 @@ keys:
     - &teemo age1jztn2kejg09xsrxzf6nxm26wgpylxgq5wqjrnd5putgjd9w2yfps0wtjdm
     - &aesop age182yphg6rgfaqpnu6ldmq2e0fpgllj2dgg8qtjkkc6p54wrqdfgrs70r2zd
 creation_rules:
+  - path_regex: ^secrets/hosts/shared.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *aesop
+          - *dokja
+          - *teemo
+          - *thinkpadx1
+          - *asrock
   - path_regex: ^secrets/hosts/aesop.yml$
     key_groups:
       - pgp:

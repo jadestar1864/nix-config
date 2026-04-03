@@ -22,9 +22,14 @@
       ];
 
       services.openssh.enable = true;
-      users.users.jaden.openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBXcvbsXQen1xvAtTJX/12+s9QsYuR3bu61NkLRM9/eH"
-      ];
+      users.users = {
+        jaden.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBXcvbsXQen1xvAtTJX/12+s9QsYuR3bu61NkLRM9/eH"
+        ];
+        admin.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILf98pOpo9cwmMfuI7YrzP1mf5Oc+5n9esR1uZ3+qJ6+"
+        ];
+      };
 
       services.usbguard.enable = false;
       powerManagement.cpuFreqGovernor = "ondemand";
