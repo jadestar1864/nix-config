@@ -58,6 +58,7 @@
             url = url;
           }) [
             "https://codeberg.org/hagezi/mirror2/raw/branch/main/dns-blocklists/adblock/multi.txt"
+            "https://codeberg.org/hagezi/mirror2/raw/branch/main/dns-blocklists/adblock/tif.txt"
           ];
       };
     };
