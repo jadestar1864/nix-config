@@ -28,7 +28,9 @@
           upstream_dns = [
             "https://dns.mullvad.net/dns-query"
             "https://dns.cloudflare.com/dns-query"
-            "https://dns.quad9.net/dns-query"
+            "tls://dns10.quad9.net"
+            "tls://p0.freedns.controld.com"
+            "tls://unfiltered.adguard-dns.com"
           ];
           upstream_mode = "load_balance";
           bootstrap_dns = [
