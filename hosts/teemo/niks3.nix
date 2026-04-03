@@ -24,7 +24,7 @@
     networking.firewall.allowedTCPPorts = [5751];
     services.niks3 = {
       enable = true;
-      httpAddr = "127.0.0.1:5751";
+      httpAddr = "10.169.0.3:5751";
 
       # S3 configuration
       s3 = {
