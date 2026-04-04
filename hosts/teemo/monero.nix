@@ -4,6 +4,7 @@
 
     services.monero = {
       enable = true;
+      prune = true;
       rpc = {
         address = "10.169.0.3";
         port = 18089;
