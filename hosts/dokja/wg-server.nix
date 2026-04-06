@@ -24,6 +24,13 @@
         owner = "systemd-network";
         group = "systemd-network";
       };
+      asrock_preshared_key = {
+        sopsFile = ../../secrets/hosts/asrock-dokja.yml;
+        key = "wg_preshared_key";
+        mode = "640";
+        owner = "systemd-network";
+        group = "systemd-network";
+      };
       thinkpadx1_preshared_key = {
         sopsFile = ../../secrets/hosts/dokja-thinkpadx1.yml;
         key = "wg_preshared_key";
@@ -86,6 +93,11 @@
             PublicKey = "6hWlt5QltfIeh3xK0k2OH8YI75TSWz/j/Nxm5WsXMTg=";
             PresharedKeyFile = config.sops.secrets.thinkpadx1_preshared_key.path;
             AllowedIPs = ["10.169.0.7/32"];
+          }
+          {
+            PublicKey = "Egn8g/Arb0OmOCih8EiyVAlTsXj5F6S//C8sn3ElaTE=";
+            PresharedKeyFile = config.sops.secrets.asrock_preshared_key.path;
+            AllowedIPs = ["10.169.0.9/32"];
           }
         ];
       };

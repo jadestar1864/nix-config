@@ -25,6 +25,12 @@ creation_rules:
           - *jaden
         age:
           - *aesop
+  - path_regex: ^secrets/hosts/asrock.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *asrock
   - path_regex: ^secrets/hosts/dokja.yml$
     key_groups:
       - pgp:
@@ -55,6 +61,13 @@ creation_rules:
           - *jaden
         age:
           - *aesop
+          - *dokja
+  - path_regex: ^secrets/hosts/asrock-dokja.yml$
+    key_groups:
+      - pgp:
+          - *jaden
+        age:
+          - *asrock
           - *dokja
   - path_regex: ^secrets/hosts/dokja-teemo.yml$
     key_groups:
