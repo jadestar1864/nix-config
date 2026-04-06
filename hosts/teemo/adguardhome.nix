@@ -25,20 +25,24 @@
           }
         ];
         dns = {
-          upstream_dns = [
+          upstream_dns = ["127.0.0.1:5335"];
+          upstream_mode = "load_balance";
+          fallback_dns = [
             "https://dns.mullvad.net/dns-query"
             "https://dns.cloudflare.com/dns-query"
             "tls://dns10.quad9.net"
             "tls://p0.freedns.controld.com"
             "tls://unfiltered.adguard-dns.com"
           ];
-          upstream_mode = "load_balance";
           bootstrap_dns = [
-            "1.1.1.1"
-            "1.0.0.1"
+            "9.9.9.9"
+            "149.112.112.112"
           ];
           enable_dnssec = true;
           aaaa_disabled = true;
+
+          # Rely on unbound cache instead
+          cache_enabled = false;
         };
         dhcp = {
           enabled = true;
