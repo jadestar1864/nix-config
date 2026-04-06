@@ -38,6 +38,11 @@
         owner = "systemd-network";
         group = "systemd-network";
       };
+      zairman_preshared_key = {
+        mode = "640";
+        owner = "systemd-network";
+        group = "systemd-network";
+      };
     };
 
     environment.systemPackages = [pkgs.wireguard-tools];
@@ -52,7 +57,7 @@
     */
     networking.nat = {
       enable = true;
-      externalInterface = "ens18";
+      externalInterface = "ens6";
       internalInterfaces = ["wg0"];
     };
 
@@ -98,6 +103,11 @@
             PublicKey = "Egn8g/Arb0OmOCih8EiyVAlTsXj5F6S//C8sn3ElaTE=";
             PresharedKeyFile = config.sops.secrets.asrock_preshared_key.path;
             AllowedIPs = ["10.169.0.9/32"];
+          }
+          {
+            PublicKey = "j3c3YUFs204ABon7uWfelzEuwa0HgHv/Q6TRxMs55VM=";
+            PresharedKeyFile = config.sops.secrets.zairman_preshared_key.path;
+            AllowedIPs = ["10.169.0.11/32"];
           }
         ];
       };
