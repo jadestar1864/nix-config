@@ -144,6 +144,7 @@
           "8080:8080"
           "6789:6789"
           "2468:2468"
+          "9696:9696"
         ];
         volumes = [
           "/var/lib/gluetun:/gluetun"
@@ -175,9 +176,7 @@
         volumes = [
           "/var/lib/prowlarr:/config"
         ];
-        ports = [
-          "9696:9696"
-        ];
+        networks = ["container:gluetun"];
       };
       flaresolverr = {
         image = "ghcr.io/flaresolverr/flaresolverr";
