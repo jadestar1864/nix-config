@@ -65,8 +65,7 @@
       networks."50-wg0" = {
         matchConfig.Name = "wg0";
         networkConfig.IPv4Forwarding = true;
-
-        address = ["10.169.0.1/24"];
+        address = ["10.169.0.1/32"];
       };
 
       netdevs."50-wg0" = {
@@ -97,17 +96,17 @@
           {
             PublicKey = "6hWlt5QltfIeh3xK0k2OH8YI75TSWz/j/Nxm5WsXMTg=";
             PresharedKeyFile = config.sops.secrets.thinkpadx1_preshared_key.path;
-            AllowedIPs = ["10.169.0.7/32"];
+            AllowedIPs = ["10.169.1.3/32"];
           }
           {
             PublicKey = "Egn8g/Arb0OmOCih8EiyVAlTsXj5F6S//C8sn3ElaTE=";
             PresharedKeyFile = config.sops.secrets.asrock_preshared_key.path;
-            AllowedIPs = ["10.169.0.9/32"];
+            AllowedIPs = ["10.169.1.1/32"];
           }
           {
             PublicKey = "j3c3YUFs204ABon7uWfelzEuwa0HgHv/Q6TRxMs55VM=";
             PresharedKeyFile = config.sops.secrets.zairman_preshared_key.path;
-            AllowedIPs = ["10.169.0.11/32"];
+            AllowedIPs = ["10.169.1.5/32"];
           }
         ];
       };
