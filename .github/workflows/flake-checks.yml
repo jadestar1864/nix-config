@@ -87,7 +87,7 @@ jobs:
       - name: Get OIDC token
         if: steps.skip_check.outputs.should_skip != 'true'
         id: oidc
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const token = await core.getIDToken("https://niks3.jadestar.dev");
@@ -112,7 +112,7 @@ jobs:
       - run: exit 1
         if: contains(fromJson('["cancelled", "failure"]'), needs.nix-build.result)
       - name: Approve PR
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         if: github.event_name == 'pull_request' && contains(fromJson('["dependabot[bot]", "voidscrubber-2148332231384339-17[bot]"]'), github.actor)
         with:
           script: |
