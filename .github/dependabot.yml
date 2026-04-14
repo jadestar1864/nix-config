@@ -10,3 +10,15 @@ updates:
       actions-deps:
         patterns:
           - "*"
+  - package-ecosystem: "nix"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "0 2 * * *"
+      timezone: "America/Chicago"
+    commit-message:
+      prefix: "build(flake.lock)"
+    groups:
+      flake-inputs:
+        patterns:
+          - "*"
