@@ -55,6 +55,8 @@
         # forceSSL = true;        # default
       };
 
+      gc.enable = true;
+
       oidc.providers.github = {
         issuer = "https://token.actions.githubusercontent.com";
         audience = "https://niks3.jadestar.dev";
