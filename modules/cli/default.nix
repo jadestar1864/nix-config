@@ -6,6 +6,7 @@
     modules.pc.home = {pkgs, ...}: {
       home.packages = with pkgs; [
         fastfetch
+        nix-index
       ];
 
       programs.atuin.enable = true;
