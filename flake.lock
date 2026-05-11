@@ -105,11 +105,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777851538,
-        "narHash": "sha256-Gp8qwTEYNoy2yvmErVGlvLOQvrtEECCAKbonW7VJef8=",
+        "lastModified": 1778401693,
+        "narHash": "sha256-OVHdCqXXUF5UdGkH+FF2ZL06OLZjj2kvP2dIUmzVWoo=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "cc09c0f9b7eaa95c2d9827338a5eb03d32505ca5",
+        "rev": "389b83002efc26f1145e89a6a8e6edc5a6435948",
         "type": "github"
       },
       "original": {
@@ -136,21 +136,17 @@
     },
     "niks3": {
       "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ],
-        "process-compose": "process-compose",
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1778354424,
-        "narHash": "sha256-Whm64ezjy3IjItWCRiLgtkOHTQSMmPHDfGtVO9iCfqs=",
+        "lastModified": 1778431771,
+        "narHash": "sha256-5cOjpGIdh1D3vsoOA8r21ACJBMulhg240MRaBNTbPLI=",
         "owner": "Mic92",
         "repo": "niks3",
-        "rev": "80853dbb52e04f2eccc427faf5e85d43fe02821d",
+        "rev": "2fd07c218b5575e30b7e62da56e6ddd6899f59db",
         "type": "github"
       },
       "original": {
@@ -234,11 +230,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778395809,
-        "narHash": "sha256-Jl3fg2TTQpFEFR4Xg9wdrNEohWIZI2jrLPO84ctFfPc=",
+        "lastModified": 1778489397,
+        "narHash": "sha256-MHIgV6mje2hNLMvbyIf2G83NU80RpUkDwxGjbAJMeoc=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "4d723c32ac8ccbf63f6f201c95195fae1ac1d11c",
+        "rev": "845ef6aa13d72e54ab8d4c49c15c46bdff99532f",
         "type": "github"
       },
       "original": {
@@ -267,21 +263,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "plasma-manager",
-        "type": "github"
-      }
-    },
-    "process-compose": {
-      "locked": {
-        "lastModified": 1767863885,
-        "narHash": "sha256-XXekPAxzbv1DmHFo3Elmj/vDnvWc1V0jdDUvM0/Wf7k=",
-        "owner": "Platonic-Systems",
-        "repo": "process-compose-flake",
-        "rev": "99bea96cf269cfd235833ebdf645b567069fd398",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Platonic-Systems",
-        "repo": "process-compose-flake",
         "type": "github"
       }
     },
