@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  unify.modules.dev.home = {pkgs, ...}: {
+  den.aspects.devops.homeManager = {pkgs, ...}: {
     home.packages = [pkgs.libnotify];
     programs.zsh = {
       initContent = lib.mkAfter ''

@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  den.aspects.teemo.nixos = {
     config,
     pkgs,
     ...

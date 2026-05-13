@@ -1,6 +1,6 @@
 {
-  unify.modules.dev.home = {
-    hostConfig,
+  den.aspects.devops.homeManager = {
+    host,
     pkgs,
     ...
   }: {
@@ -54,8 +54,8 @@
             command = "nixd";
             args = ["--semantic-tokens=true"];
             config.nixd = let
-              myFlake = "(builtins.getFlake \"/etc/nixos\")";
-              nixosOpts = "${myFlake}.nixosConfigurations.${hostConfig.name}.options";
+              myFlake = "(builtins.getFlake \"${host.nix-config-path}\")";
+              nixosOpts = "${myFlake}.nixosConfigurations.${host.hostName}.options";
             in {
               nixpkgs.expr = "import ${myFlake}.inputs.nixpkgs { }";
               formatting.command = ["alejandra"];

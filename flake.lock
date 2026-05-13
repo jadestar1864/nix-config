@@ -16,6 +16,21 @@
         "type": "gitlab"
       }
     },
+    "den": {
+      "locked": {
+        "lastModified": 1779043049,
+        "narHash": "sha256-PXzGBCch+4iSWF4LLB0cwS51deJIJ0UojsgH8b2omIY=",
+        "owner": "denful",
+        "repo": "den",
+        "rev": "18dc079141797f6f07d7f2d4a362d2bb10f637f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "denful",
+        "repo": "den",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -230,11 +245,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779103067,
-        "narHash": "sha256-KScMh9U1HJbmrCVwzwXFxXl3u62ligxRdjMlhLXIqOU=",
+        "lastModified": 1779139736,
+        "narHash": "sha256-fTYvgtR0CBf+6OUrkGTtsSHRE0jO0ZuKtVvELYpKol8=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "67c109495c055e26a85229912489d44cc8ea4194",
+        "rev": "e207b3333186e1660fdebb68e2d8957620723025",
         "type": "github"
       },
       "original": {
@@ -269,6 +284,7 @@
     "root": {
       "inputs": {
         "argononed": "argononed",
+        "den": "den",
         "devshell": "devshell",
         "disko": "disko",
         "flake-parts": "flake-parts",
@@ -282,7 +298,6 @@
         "nur": "nur",
         "plasma-manager": "plasma-manager",
         "sops-nix": "sops-nix",
-        "unify": "unify",
         "zsh-auto-notify": "zsh-auto-notify"
       }
     },
@@ -325,32 +340,6 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
-      }
-    },
-    "unify": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765403820,
-        "narHash": "sha256-3VJMOW8DOFgWerzUmOI5YiGA3auqW4ZbIDHNaqvLp0E=",
-        "ref": "refs/heads/main",
-        "rev": "35824b87edab3df89474b426a8fcbe02cb720504",
-        "revCount": 41,
-        "type": "git",
-        "url": "https://codeberg.org/quasigod/unify"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://codeberg.org/quasigod/unify"
       }
     },
     "zsh-auto-notify": {

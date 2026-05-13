@@ -1,5 +1,5 @@
 {lib, ...}: {
-  unify.modules.pc.home = {
+  den.aspects.pc.homeManager = {
     config,
     pkgs,
     ...

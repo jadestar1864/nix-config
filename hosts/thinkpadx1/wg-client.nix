@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.thinkpadx1.nixos = {
+  den.aspects.thinkpadx1.nixos = {
     config,
     pkgs,
     ...

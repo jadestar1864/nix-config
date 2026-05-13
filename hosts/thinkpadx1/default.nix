@@ -1,29 +1,28 @@
-{config, ...}: {
-  unify.hosts.nixos.thinkpadx1 = {
-    modules = with config.unify.modules; [
-      disk-btrfs-on-luks
-      pc
-      dev
-      desktop-plasma
-      laptop
-    ];
-
+{den, ...}: {
+  den.hosts.x86_64-linux.thinkpadx1 = {
+    hostName = "thinkpadx1";
+    nix-config-path = "/etc/nixos";
+    users = {
+      admin = {};
+      jaden = {};
+    };
     disk-layout = {
       disk0 = "/dev/nvme0n1";
       enableSwap = true;
-      swapSize = 4;
+      swapSize = 4096;
       enableDiscards = true;
     };
-
-    users.jaden.modules = config.unify.hosts.nixos.thinkpadx1.modules;
-
+  };
+  den.aspects.thinkpadx1 = {
+    includes = with den.aspects; [
+      disk-layout._.btrfs-on-luks
+      devops
+      pc
+      pc._.plasma
+      laptop
+    ];
     nixos = {
-      system.stateVersion = "25.05";
       hardware.facter.reportPath = ./facter.json;
-      networking = {
-        hostName = "thinkpadx1";
-      };
-
       services.usbguard.rules = ''
         allow id 1d6b:0002 serial "0000:00:0d.0" name "xHCI Host Controller" hash "d3YN7OD60Ggqc9hClW0/al6tlFEshidDnQKzZRRk410=" parent-hash "Y1kBdG1uWQr5CjULQs7uh2F6pHgFb6VDHcWLk83v+tE=" with-interface 09:00:00 with-connect-type ""
         allow id 1d6b:0003 serial "0000:00:0d.0" name "xHCI Host Controller" hash "4Q3Ski/Lqi8RbTFr10zFlIpagY9AKVMszyzBQJVKE+c=" parent-hash "Y1kBdG1uWQr5CjULQs7uh2F6pHgFb6VDHcWLk83v+tE=" with-interface 09:00:00 with-connect-type ""
@@ -35,9 +34,6 @@
         allow id 8087:0026 serial "" name "" hash "Z5csNGxiUukPPZwSHPyUqpVCNagsfOSSNL2CfXhw4IY=" parent-hash "jEP/6WzviqdJ5VSeTUY8PatCNBKeaREvo2OqdplND/o=" via-port "3-10" with-interface { e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 } with-connect-type "not used"
       '';
     };
-
-    home = {
-      services.easyeffects.preset = "Loudness+Autogain";
-    };
+    homeManager.services.easyeffects.preset = "Loudness+Autogain";
   };
 }

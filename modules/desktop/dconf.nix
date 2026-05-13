@@ -1,3 +1,3 @@
 {
-  unify.modules.pc.nixos.programs.dconf.enable = true;
+  den.aspects.pc.nixos.programs.dconf.enable = true;
 }

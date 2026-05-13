@@ -1,5 +1,5 @@
 {lib, ...}: {
-  unify.modules.disk-btrfs-on-luks.nixos = {hostConfig, ...}: {
+  den.aspects.disk-layout.provides.btrfs-on-luks.nixos = {host, ...}: {
     # Bind mount /var/tmp to /tmp
     fileSystems."/tmp" = {
       device = "/var/tmp";
@@ -12,13 +12,13 @@
     disko.devices.disk = {
       disk0 = {
         type = "disk";
-        device = hostConfig.disk-layout.disk0;
+        device = host.disk-layout.disk0;
         content = {
           type = "gpt";
           partitions = {
             ESP = {
               size = "512M";
-              type = hostConfig.disk-layout.espPartitionType;
+              type = host.disk-layout.espPartitionType;
               content = {
                 type = "filesystem";
                 format = "vfat";
@@ -34,8 +34,7 @@
                 type = "luks";
                 name = "crypted";
                 askPassword = true;
-                settings.allowDiscards = hostConfig.disk-layout.enableDiscards;
-                extraFormatArgs = lib.mkIf (hostConfig.disk-layout.extraLuksFormatArgs != null) hostConfig.disk-layout.extraLuksFormatArgs;
+                settings.allowDiscards = host.disk-layout.enableDiscards;
                 content = {
                   type = "btrfs";
                   extraArgs = ["-f"];
@@ -66,9 +65,9 @@
                       mountpoint = "/nix";
                       mountOptions = commonOpts;
                     };
-                    "/@swap" = lib.mkIf hostConfig.disk-layout.enableSwap {
+                    "/@swap" = lib.mkIf host.disk-layout.enableSwap {
                       mountpoint = "/swap";
-                      swap.swapfile.size = "${toString hostConfig.disk-layout.swapSize}G";
+                      swap.swapfile.size = "${toString host.disk-layout.swapSize}M";
                     };
                   };
                 };

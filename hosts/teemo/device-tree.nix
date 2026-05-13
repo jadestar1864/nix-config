@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {pkgs, ...}: {
+  den.aspects.teemo.nixos = {pkgs, ...}: {
     # Reference: https://git.eisfunke.com/config/nixos/-/blob/90b677e694dfccc079ce8d4d40b931082c9639d8/devices/amethyst.nix#L50
     hardware.deviceTree = let
       /*

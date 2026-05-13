@@ -1,5 +1,9 @@
-{lib, ...}: {
-  unify.modules = {
+{
+  den,
+  lib,
+  ...
+}: {
+  den.aspects = {
     laptop.nixos = {
       services.power-profiles-daemon.enable = lib.mkForce false;
       services.tlp = {
@@ -16,11 +20,13 @@
         };
       };
     };
-    gaming.nixos = {config, ...}: {
-      services.tlp.settings = lib.mkIf config.services.tlp.enable {
-        TLP_DEFAULT_MODE = "AC";
-        TLP_PERSISTENT_DEFAULT = 1;
-      };
-    };
+    gaming.includes = [
+      (den.lib.policy.when ({host, ...}: host.hasAspect den.aspects.laptop) {
+        nixos.services.tlp.settings = {
+          TLP_DEFAULT_MODE = "AC";
+          TLP_PERSISTENT_DEFAULT = 1;
+        };
+      })
+    ];
   };
 }

@@ -1,5 +1,5 @@
 {
-  unify.modules.dev.nixos = {
+  den.aspects.devops.nixos = {
     virtualisation.docker = {
       enable = false;
       rootless = {

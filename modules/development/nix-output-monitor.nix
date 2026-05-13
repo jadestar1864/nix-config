@@ -1,5 +1,5 @@
 {
-  unify.modules.dev.home = {pkgs, ...}: {
+  den.aspects.devops.homeManager = {pkgs, ...}: {
     home.packages = [pkgs.nix-output-monitor];
   };
 }

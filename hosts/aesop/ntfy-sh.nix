@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.aesop.nixos = {
+  den.aspects.aesop.nixos = {
     networking.firewall.allowedTCPPorts = [2586];
 
     services.ntfy-sh = {

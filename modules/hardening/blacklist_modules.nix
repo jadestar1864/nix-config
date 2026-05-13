@@ -1,8 +1,6 @@
 {
-  unify.nixos = {
-    boot.extraModprobeConfig = ''
-      install dccp /bin/true
-      install sctp /bin/true
-    '';
-  };
+  den.default.nixos.boot.extraModprobeConfig = ''
+    install dccp /bin/true
+    install sctp /bin/true
+  '';
 }

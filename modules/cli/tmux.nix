@@ -1,5 +1,5 @@
 {lib, ...}: {
-  unify.modules.dev.home = {pkgs, ...}: {
+  den.aspects.devops.homeManager = {pkgs, ...}: {
     programs.tmux = {
       enable = true;
       shell = "${pkgs.zsh}/bin/zsh";

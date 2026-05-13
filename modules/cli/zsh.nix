@@ -1,22 +1,11 @@
-{lib, ...}: {
-  unify.modules.dev = {
-    nixos = {
-      hostConfig,
-      pkgs,
-      ...
-    }: {
-      programs.zsh.enable = true;
-
-      users.users.${hostConfig.primaryUser.username}.shell = pkgs.zsh;
-    };
-
-    home = {pkgs, ...}: let
-      zsh = lib.getExe pkgs.zsh;
-    in {
-      programs.zsh = {
-        enable = true;
-      };
-
+{
+  den,
+  lib,
+  ...
+}: {
+  den.aspects.devops = {
+    includes = [(den.batteries.user-shell "zsh")];
+    homeManager = {pkgs, ...}: {
       programs.yazi.settings = {
         open.rules = [
           {
@@ -26,11 +15,13 @@
         ];
 
         opener.zsh-dir = [
-          {
+          (let
+            zsh = lib.getExe pkgs.zsh;
+          in {
             run = ''${zsh} -c "cd $0 && exec ${zsh}"'';
             block = true;
             desc = "Open directory in zsh";
-          }
+          })
         ];
       };
     };

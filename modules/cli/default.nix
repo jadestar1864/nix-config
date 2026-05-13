@@ -1,26 +1,21 @@
 {
-  unify = {
-    home = {
-      programs.bash.enable = true;
-    };
-    modules.pc.home = {pkgs, ...}: {
-      home.packages = with pkgs; [
-        fastfetch
-        nix-index
-      ];
+  den.aspects.pc.homeManager = {pkgs, ...}: {
+    home.packages = with pkgs; [
+      fastfetch
+      nix-index
+    ];
 
-      programs.atuin.enable = true;
-      programs.carapace.enable = true;
-      programs.eza.enable = true;
-      programs.fzf = {
-        enable = true;
-        defaultCommand = "fd --type f --strip-cwd-prefix";
-      };
-      programs.pay-respects.enable = true;
-      programs.starship = {
-        enable = true;
-        settings = builtins.fromTOML (builtins.readFile ../assets/gruvbox-rainbow.toml);
-      };
+    programs.atuin.enable = true;
+    programs.carapace.enable = true;
+    programs.eza.enable = true;
+    programs.fzf = {
+      enable = true;
+      defaultCommand = "fd --type f --strip-cwd-prefix";
+    };
+    programs.pay-respects.enable = true;
+    programs.starship = {
+      enable = true;
+      settings = builtins.fromTOML (builtins.readFile ../assets/gruvbox-rainbow.toml);
     };
   };
 }

@@ -1,11 +1,7 @@
-{
-  unify.modules.pc = {
-    nixos = {
-      nixpkgs.allowedUnfreePackages = [
-        "spotify"
-      ];
-    };
-    home = {pkgs, ...}: {
+{den, ...}: {
+  den.aspects.pc = {
+    includes = [(den.batteries.unfree ["spotify"])];
+    homeManager = {pkgs, ...}: {
       home.packages = with pkgs; [
         spotify
       ];

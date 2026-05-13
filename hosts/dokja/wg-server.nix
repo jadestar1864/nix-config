@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.dokja.nixos = {
+  den.aspects.dokja.nixos = {
     config,
     pkgs,
     ...

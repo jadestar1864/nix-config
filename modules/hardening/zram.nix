@@ -1,5 +1,3 @@
 {
-  unify.nixos = {
-    zramSwap.enable = true;
-  };
+  den.default.nixos.zramSwap.enable = true;
 }

@@ -1,5 +1,5 @@
 {
-  unify.modules.desktop-plasma.nixos = {pkgs, ...}: {
+  den.aspects.pc.provides.plasma.nixos = {pkgs, ...}: {
     services.displayManager.sddm = {
       enable = true;
       settings.General.DisplayServer = "wayland";

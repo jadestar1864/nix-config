@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {pkgs, ...}: {
+  den.aspects.teemo.nixos = {pkgs, ...}: {
     # sysctl values for increased buf size
     boot.kernel.sysctl = {
       "net.core.rmem_default" = 2097152;

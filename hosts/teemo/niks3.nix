@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  unify.hosts.nixos.teemo.nixos = {config, ...}: {
+  den.aspects.teemo.nixos = {config, ...}: {
     sops.secrets = {
       r2_access_key = {
         owner = config.services.niks3.user;

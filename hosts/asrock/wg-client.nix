@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.asrock.nixos = {
+  den.aspects.asrock.nixos = {
     config,
     pkgs,
     ...

@@ -1,5 +1,5 @@
 {
-  unify.home = {config, ...}: {
+  den.default.homeManager = {config, ...}: {
     home.preferXdgDirectories = true;
     xdg = {
       enable = true;

@@ -1,5 +1,5 @@
 {
-  unify.home = {
+  den.default.homeManager = {
     programs.helix = {
       enable = true;
       settings = {

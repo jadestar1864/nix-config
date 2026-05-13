@@ -1,5 +1,5 @@
 {
-  unify.nixos = {
+  den.default.nixos = {
     boot.loader.systemd-boot.editor = false;
 
     boot.kernelParams = [

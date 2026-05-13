@@ -1,6 +1,5 @@
 {
   nixConfig = {
-    abort-on-warn = true;
     extra-experimental-features = ["pipe-operators"];
     allow-import-from-derivation = false;
     extra-substituters = ["https://cache.jadestar.dev"];
@@ -55,17 +54,9 @@
       url = "github:MichaelAquilina/zsh-auto-notify";
     };
 
-    unify = {
-      url = "git+https://codeberg.org/quasigod/unify";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-      inputs.flake-parts.follows = "flake-parts";
-    };
-
     niks3 = {
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
     };
 
     nix-github-actions = {
@@ -79,17 +70,17 @@
     };
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    den.url = "github:denful/den";
   };
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [
-        inputs.unify.flakeModule
         (inputs.import-tree [
           ./hosts
           ./modules
         ])
       ];
-      _module.args.rootPath = ./.;
     };
 }

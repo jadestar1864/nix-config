@@ -1,10 +1,8 @@
 {
-  unify.modules.pc.nixos = {hostConfig, ...}: {
+  den.aspects.pc.nixos = {
     networking.networkmanager = {
       enable = true;
       wifi.backend = "iwd";
     };
-
-    users.users.${hostConfig.primaryUser.username}.extraGroups = ["networkmanager"];
   };
 }

@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.dokja.nixos = {config, ...}: {
+  den.aspects.dokja.nixos = {config, ...}: {
     /*
     sops.secrets = {
       airvpn_private_key = {

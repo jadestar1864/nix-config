@@ -1,45 +1,37 @@
 {
   inputs,
   lib,
-  config,
   ...
 }: {
-  options.nix.settings = lib.mkOption {
-    type = lib.types.lazyAttrsOf lib.types.anything;
-  };
+  den.default = let
+    nix-attrs = {config, ...}: {
+      nix = {
+        settings = {
+          connect-timeout = 5;
+          log-lines = 25;
+          min-free = 128000000; # 128MB
+          max-free = 1000000000; # 1GB
 
-  config = {
-    nix.settings = {
-      connect-timeout = 5;
-      log-lines = 25;
-      min-free = 128000000; # 128MB
-      max-free = 1000000000; # 1GB
+          auto-optimise-store = true;
+          warn-dirty = false;
 
-      auto-optimise-store = true;
-      warn-dirty = false;
+          extra-substituters = ["https://cache.jadestar.dev"];
+          extra-trusted-public-keys = ["cache.jadestar.dev-1:6nJfGkAZIQL8nj9kNzgXc1AJa+Eg/zv0YjZu8wX/aFM="];
 
-      extra-substituters = ["https://cache.jadestar.dev"];
-      extra-trusted-public-keys = ["cache.jadestar.dev-1:6nJfGkAZIQL8nj9kNzgXc1AJa+Eg/zv0YjZu8wX/aFM="];
-
-      experimental-features = ["nix-command" "flakes" "pipe-operators"];
-    };
-    unify = let
-      nix-attrs = nixosArgs: {
-        nix = {
-          inherit (config.nix) settings;
-
-          # Add flake inputs as registry
-          # Make nix3 commands consistent with flake
-          registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-
-          # Add inputs to system's legacy channel
-          # Make legacy nix commands consistent with flake
-          nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") nixosArgs.config.nix.registry;
+          experimental-features = ["nix-command" "flakes" "pipe-operators"];
         };
+
+        # Add flake inputs as registry
+        # Make nix3 commands consistent with flake
+        registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+
+        # Add inputs to system's legacy channel
+        # Make legacy nix commands consistent with flake
+        nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       };
-    in {
-      nixos = nix-attrs;
-      home = nix-attrs;
     };
+  in {
+    nixos = nix-attrs;
+    homeManager = nix-attrs;
   };
 }

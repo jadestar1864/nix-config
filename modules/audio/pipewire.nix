@@ -1,5 +1,5 @@
 {
-  unify.modules.pc = {
+  den.aspects.pc = {
     nixos = {
       services.pipewire = {
         enable = true;
@@ -13,7 +13,7 @@
       security.rtkit.enable = true;
     };
 
-    home = {pkgs, ...}: {
+    homeManager = {pkgs, ...}: {
       home.packages = with pkgs; [
         pwvucontrol
         qpwgraph

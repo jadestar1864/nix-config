@@ -1,5 +1,5 @@
 {
-  unify.modules.dev.home.programs.zsh.syntaxHighlighting = {
+  den.aspects.devops.homeManager.programs.zsh.syntaxHighlighting = {
     enable = true;
     highlighters = [
       "main"

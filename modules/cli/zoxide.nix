@@ -1,5 +1,5 @@
 {
-  unify.modules.dev.home = {
+  den.aspects.devops.homeManager = {
     programs.zoxide.enable = true;
 
     home.shellAliases = {

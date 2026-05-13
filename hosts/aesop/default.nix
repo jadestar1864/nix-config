@@ -1,20 +1,24 @@
-{config, ...}: {
-  unify.hosts.nixos.aesop = {
-    modules = with config.unify.modules; [
-      disk-ext4-simple
-    ];
-
-    users.jaden.modules = config.unify.hosts.nixos.aesop.modules;
-
+{den, ...}: {
+  den.hosts.x86_64-linux.aesop = {
+    hostName = "aesop";
+    users = {
+      admin = {};
+      jaden = {};
+    };
     disk-layout = {
       disk0 = "/dev/disk/by-id/nvme-WPBSNM8-512GTP_WWDD250807047011727";
       enableSwap = true;
-      swapSize = 4;
+      swapSize = 4096;
     };
-
+  };
+  den.aspects.aesop = {
+    includes = with den.aspects; [
+      disk-layout._.ext4-simple
+      auto-upgrade
+    ];
     nixos = {
-      pkgs,
       modulesPath,
+      pkgs,
       ...
     }: {
       imports = [
@@ -51,12 +55,10 @@
         LIBVA_DRIVER_NAME = "iHD";
       };
 
-      system.stateVersion = "25.11";
       hardware.facter.reportPath = ./facter.json;
       networking = {
         networkmanager.enable = false;
         useDHCP = false;
-        hostName = "aesop";
       };
 
       systemd.network.enable = true;

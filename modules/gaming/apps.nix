@@ -1,5 +1,5 @@
 {
-  unify.modules.gaming.home = {pkgs, ...}: {
+  den.aspects.gaming.homeManager = {pkgs, ...}: {
     home.packages = with pkgs; [
       heroic
       prismlauncher

@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.aesop.nixos = {
+  den.aspects.aesop.nixos = {
     networking.firewall.allowedTCPPorts = [12345];
 
     # Force dbus-broker implementation so prometheus systemd exporter works

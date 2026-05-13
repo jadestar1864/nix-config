@@ -1,9 +1,13 @@
-{withSystem, ...}: {
-  unify.modules = {
-    desktop-plasma.home = {pkgs, ...}: {
+{
+  den.aspects.pc = {
+    provides.plasma.homeManager = {pkgs, ...}: {
       programs.firefox.nativeMessagingHosts = [pkgs.kdePackages.plasma-browser-integration];
     };
-    pc.home = {pkgs, ...}: {
+    homeManager = {
+      inputs',
+      pkgs,
+      ...
+    }: {
       home.sessionVariables = {
         MOZ_ENABLE_WAYLAND = "1";
         MOZ_USE_XINPUT2 = "1";
@@ -144,15 +148,13 @@
               };
             };
           };
-          extensions.packages = withSystem pkgs.stdenv.hostPlatform.system ({inputs', ...}:
-            with inputs'.nur.legacyPackages.repos.rycee.firefox-addons; [
-              plasma-integration
-              privacy-redirect
-              proton-pass
-              ublock-origin
-              addy_io
-              bitwarden
-            ]);
+          extensions.packages = with inputs'.nur.legacyPackages.repos.rycee.firefox-addons; [
+            plasma-integration
+            privacy-redirect
+            ublock-origin
+            addy_io
+            bitwarden
+          ];
         };
       };
     };

@@ -1,25 +1,29 @@
 {
-  config,
+  den,
   inputs,
   ...
 }: {
   # Using https://github.com/pftf/RPi4 @ v1.50
-  unify.hosts.nixos.teemo = {
-    modules = with config.unify.modules; [
-      disk-ext4-simple
-    ];
-
-    users.jaden.modules = config.unify.hosts.nixos.teemo.modules;
-
+  den.hosts.aarch64-linux.teemo = {
+    hostName = "teemo";
+    users = {
+      admin = {};
+      jaden = {};
+    };
     disk-layout = {
       disk0 = "/dev/disk/by-id/usb-USB_SanDisk_3.2Gen1_03020405050625094732-0:0";
       enableSwap = true;
-      swapSize = 4;
+      swapSize = 4096;
     };
-
+  };
+  den.aspects.teemo = {
+    includes = with den.aspects; [
+      disk-layout._.ext4-simple
+      auto-upgrade
+    ];
     nixos = {
-      pkgs,
       lib,
+      pkgs,
       modulesPath,
       ...
     }: {
@@ -27,6 +31,9 @@
         inputs.nixos-hardware.nixosModules.raspberry-pi-4
         "${modulesPath}/profiles/minimal.nix"
       ];
+
+      # Host sometimes stays off after powering off
+      system.autoUpgrade.allowReboot = false;
 
       boot = {
         loader = {
@@ -60,7 +67,6 @@
         libraspberrypi
         raspberrypi-eeprom
       ];
-
       services.openssh.enable = true;
       users.users = {
         jaden.openssh.authorizedKeys.keys = [
@@ -81,12 +87,10 @@
 
       powerManagement.cpuFreqGovernor = "ondemand";
 
-      system.stateVersion = "25.11";
       hardware.facter.reportPath = ./facter.json;
       networking = {
         networkmanager.enable = false;
         useDHCP = false;
-        hostName = "teemo";
       };
 
       systemd.network.enable = true;

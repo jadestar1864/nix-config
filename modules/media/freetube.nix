@@ -1,5 +1,5 @@
 {
-  unify.modules.pc.home = {pkgs, ...}: {
+  den.aspects.pc.homeManager = {pkgs, ...}: {
     home.packages = with pkgs; [
       freetube
     ];

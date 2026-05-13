@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  den.aspects.teemo.nixos = {
     sops.secrets = {
       silverbullet_env_file = {};
       silverbullet_journal_env_file = {};

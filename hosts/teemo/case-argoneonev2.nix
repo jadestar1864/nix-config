@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  unify.hosts.nixos.teemo.nixos = {pkgs, ...}: {
+  den.aspects.teemo.nixos = {pkgs, ...}: {
     services.hardware.argonone = {
       enable = true;
       package = pkgs.argononed.overrideAttrs {

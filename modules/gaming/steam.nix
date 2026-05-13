@@ -1,12 +1,13 @@
-{
-  unify.modules.gaming.nixos = {
-    programs.steam.enable = true;
-
-    nixpkgs.allowedUnfreePackages = [
-      "steam"
-      "steam-original"
-      "steam-run"
-      "steam-unwrapped"
+{den, ...}: {
+  den.aspects.gaming = {
+    nixos.programs.steam.enable = true;
+    includes = [
+      (den.batteries.unfree [
+        "steam"
+        "steam-original"
+        "steam-run"
+        "steam-unwrapped"
+      ])
     ];
   };
 }

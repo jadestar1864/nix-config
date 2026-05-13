@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  den.aspects.teemo.nixos = {
     services.resolved.extraConfig = ''
       [Resolve]
       DNS=127.0.0.1

@@ -1,5 +1,3 @@
 {
-  unify.modules.gaming.nixos = {
-    programs.gamemode.enable = true;
-  };
+  den.aspects.gaming.nixos.programs.gamemode.enable = true;
 }

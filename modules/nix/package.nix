@@ -10,8 +10,8 @@
       |> lib.mkDefault;
   };
 in {
-  unify = {
+  den.default = {
     nixos = polyModule;
-    home = polyModule;
+    homeManager = polyModule;
   };
 }

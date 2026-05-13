@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  den.aspects.teemo.nixos = {
     networking.firewall.interfaces.wg0.allowedTCPPorts = [
       18080
       18083

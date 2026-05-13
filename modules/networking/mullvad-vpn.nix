@@ -1,5 +1,5 @@
 {
-  unify.modules.pc.nixos = {pkgs, ...}: let
+  den.aspects.pc.nixos = {pkgs, ...}: let
     mullvad-autostart = pkgs.makeAutostartItem {
       name = "mullvad-vpn";
       package = pkgs.mullvad-vpn;

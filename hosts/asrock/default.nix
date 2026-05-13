@@ -1,29 +1,29 @@
-{config, ...}: {
-  unify.hosts.nixos.asrock = {
-    modules = with config.unify.modules; [
-      disk-btrfs-on-luks-with-raid0
-      pc
-      dev
-      desktop-plasma
-      gaming
-    ];
-
-    users.jaden.modules = config.unify.hosts.nixos.asrock.modules;
-
+{den, ...}: {
+  den.hosts.x86_64-linux.asrock = {
+    hostName = "asrock";
+    nix-config-path = "/home/jaden/Projects/nix-config-change";
+    users = {
+      admin = {};
+      jaden = {};
+    };
     disk-layout = {
       disk0 = "/dev/nvme0n1";
       disk1 = "/dev/nvme1n1";
       enableSwap = true;
-      swapSize = 4;
+      swapSize = 4096;
       enableDiscards = true;
     };
+  };
+  den.aspects.asrock = {
+    includes = with den.aspects; [
+      disk-layout._.btrfs-on-luks-with-raid0
+      pc
+      pc._.plasma
+      devops
+      gaming
+    ];
     nixos = {
-      system.stateVersion = "25.05";
       hardware.facter.reportPath = ./facter.json;
-      networking = {
-        hostName = "asrock";
-      };
-
       boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
       services.usbguard.enable = false;
@@ -36,7 +36,7 @@
         };
       };
     };
-    home = {
+    homeManager = {
       programs.ssh.matchBlocks = {
         aesop.hostname = "192.168.1.213";
         dokja.hostname = "66.179.137.242";

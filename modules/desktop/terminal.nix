@@ -1,5 +1,5 @@
 {
-  unify.modules.pc.home = {pkgs, ...}: {
+  den.aspects.pc.homeManager = {pkgs, ...}: {
     fonts.fontconfig.enable = true;
     home.packages = with pkgs; [
       nerd-fonts.departure-mono
@@ -24,7 +24,7 @@
     };
   };
 
-  unify.modules.desktop-plasma.home = {
+  den.aspects.pc.provides.plasma.homeManager = {
     programs.plasma.shortcuts = {
       "services/Alacritty.desktop" = {
         _launch = "Meta+Q";

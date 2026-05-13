@@ -1,24 +1,26 @@
-{config, ...}: {
-  unify.hosts.nixos.dokja = {
-    modules = with config.unify.modules; [
-      disk-gpt-bios-compat
-    ];
-
-    users.jaden.modules = config.unify.hosts.nixos.dokja.modules;
-
+{den, ...}: {
+  den.hosts.x86_64-linux.dokja = {
+    hostName = "dokja";
+    users = {
+      admin = {};
+      jaden = {};
+    };
     disk-layout = {
       disk0 = "/dev/vda";
       enableSwap = true;
-      swapSize = 2;
+      swapSize = 2048;
     };
-
-    nixos = nixosConfig: {
-      system.stateVersion = "25.11";
+  };
+  den.aspects.dokja = {
+    includes = with den.aspects; [
+      disk-layout._.gpt-bios-compat
+      auto-upgrade
+    ];
+    nixos = {
       hardware.facter.reportPath = ./facter.json;
       networking = {
         networkmanager.enable = false;
         useDHCP = false;
-        hostName = "dokja";
         nameservers = [
           "9.9.9.9"
           "149.112.112.112"

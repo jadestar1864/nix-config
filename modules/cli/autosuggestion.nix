@@ -1,5 +1,5 @@
 {
-  unify.modules.dev.home = {
+  den.aspects.devops.homeManager = {
     programs.zsh = {
       autosuggestion.enable = true;
       initContent = ''

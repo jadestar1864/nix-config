@@ -1,5 +1,5 @@
 {
-  unify.modules.pc.home = {pkgs, ...}: {
+  den.aspects.pc.homeManager = {pkgs, ...}: {
     services.mpris-proxy.enable = true;
     programs.mpv = {
       enable = true;

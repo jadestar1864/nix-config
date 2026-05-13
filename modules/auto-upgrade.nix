@@ -1,12 +1,16 @@
-{
-  unify.hosts.nixos.teemo.nixos = {
+{lib, ...}: {
+  den.aspects.auto-upgrade.nixos = {
     system.autoUpgrade = {
       enable = true;
       flake = "github:jadestar1864/nix-config";
       flags = ["-L" "--accept-flake-config"];
       dates = "09:00 UTC";
       randomizedDelaySec = "45min";
-      allowReboot = false;
+      allowReboot = lib.mkDefault true;
+      rebootWindow = {
+        lower = "10:00";
+        upper = "14:00";
+      };
     };
   };
 }

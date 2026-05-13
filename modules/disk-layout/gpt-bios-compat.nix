@@ -1,35 +1,31 @@
 {lib, ...}: {
-  unify.modules.disk-ext4-simple.nixos = {hostConfig, ...}: {
+  den.aspects.disk-layout.provides.gpt-bios-compat.nixos = {host, ...}: {
     disko.devices.disk = {
       disk0 = {
         type = "disk";
-        device = hostConfig.disk-layout.disk0;
+        device = host.disk-layout.disk0;
         content = {
           type = "gpt";
           partitions = {
             boot = {
-              size = "512M";
-              type = hostConfig.disk-layout.espPartitionType;
+              size = "1M";
+              type = "EF02"; # for grub MBR
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [
-                  "umask=0077"
-                ];
               };
             };
             root = {
-              size = lib.mkIf (!hostConfig.disk-layout.enableSwap) "100%";
-              end = lib.mkIf hostConfig.disk-layout.enableSwap "-${toString hostConfig.disk-layout.swapSize}G";
+              size = lib.mkIf (!host.disk-layout.enableSwap) "100%";
+              end = lib.mkIf host.disk-layout.enableSwap "-${toString host.disk-layout.swapSize}M";
               content = {
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = "/";
               };
             };
-            encryptedSwap = lib.mkIf hostConfig.disk-layout.enableSwap {
-              size = "${toString hostConfig.disk-layout.swapSize}G";
+            encryptedSwap = lib.mkIf host.disk-layout.enableSwap {
+              size = "${toString host.disk-layout.swapSize}G";
               content = {
                 type = "swap";
                 randomEncryption = true;

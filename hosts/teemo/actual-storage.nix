@@ -1,5 +1,5 @@
 {
-  unify.hosts.nixos.teemo.nixos = {
+  den.aspects.teemo.nixos = {
     sops.secrets.actual_key = {
       format = "binary";
       sopsFile = ./actual.key;

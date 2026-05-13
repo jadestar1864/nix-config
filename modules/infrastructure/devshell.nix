@@ -3,9 +3,8 @@
 
   perSystem = {pkgs, ...}: {
     devshells.default = {
-      packages = with pkgs; [
-        nix
-        sops
+      packages = [
+        pkgs.sops
       ];
     };
   };
