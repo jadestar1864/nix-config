@@ -1,10 +1,9 @@
 {
   den.aspects.teemo.nixos = {
-    services.resolved.extraConfig = ''
-      [Resolve]
-      DNS=127.0.0.1
-      DNSStubListener=no
-    '';
+    services.resolved.settings.Resolve = {
+      DNS = "127.0.0.1";
+      DNSStubListener = "no";
+    };
 
     networking.firewall = {
       allowedTCPPorts = [53 68];

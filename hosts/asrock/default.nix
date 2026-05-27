@@ -37,7 +37,7 @@
       };
     };
     homeManager = {
-      programs.ssh.matchBlocks = {
+      programs.ssh.settings = {
         aesop.hostname = "192.168.1.213";
         dokja.hostname = "66.179.137.242";
         teemo.hostname = "192.168.1.3";

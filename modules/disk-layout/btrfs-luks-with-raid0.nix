@@ -2,6 +2,7 @@
   den.aspects.disk-layout.provides.btrfs-on-luks-with-raid0.nixos = {host, ...}: {
     # Bind mount /var/tmp to /tmp
     fileSystems."/tmp" = {
+      fsType = "auto";
       device = "/var/tmp";
       options = ["bind"];
     };

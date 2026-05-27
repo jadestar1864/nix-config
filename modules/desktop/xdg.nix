@@ -5,6 +5,7 @@
       enable = true;
       userDirs = {
         enable = true;
+        setSessionVariables = true;
         createDirectories = true;
         music = "${config.home.homeDirectory}/Media/Music";
         pictures = "${config.home.homeDirectory}/Media/Pictures";
@@ -13,8 +14,8 @@
         # publicshare = "/var/empty";
         # templates = "/var/empty";
         extraConfig = {
-          XDG_PUBLICSHARE_DIR = "/var/empty";
-          XDG_TEMPLATES_DIR = "/var/empty";
+          PUBLICSHARE = "/var/empty";
+          TEMPLATES = "/var/empty";
         };
       };
     };

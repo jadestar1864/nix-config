@@ -2,6 +2,7 @@
   den.aspects.disk-layout.provides.btrfs-on-luks.nixos = {host, ...}: {
     # Bind mount /var/tmp to /tmp
     fileSystems."/tmp" = {
+      fsType = "auto";
       device = "/var/tmp";
       options = ["bind"];
     };

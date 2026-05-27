@@ -15,6 +15,7 @@
       programs.firefox = {
         enable = true;
         languagePacks = ["en_US"];
+        configPath = ".mozilla/firefox";
         policies = {
           SearchSuggestEnabled = false;
           FirefoxSuggest = {

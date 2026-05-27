@@ -1,5 +1,5 @@
 {
-  den.aspects.teemo.nixos = {
+  den.aspects.teemo.nixos = {config, ...}: {
     # Force dbus-broker implementation so prometheus systemd exporter works
     # https://discourse.nixos.org/t/systemd-exporter-couldnt-get-dbus-connection-read-unix-run-dbus-system-bus-socket-recvmsg-connection-reset-by-peer/64367
     # https://github.com/NixOS/nixpkgs/issues/408800
@@ -86,6 +86,10 @@
         analytics.reporting_enabled = false;
       };
     };
+    sops.secrets.grafana_secret_key = {
+      owner = "grafana";
+      mode = "0400";
+    };
     services.grafana = {
       enable = true;
       settings = {
@@ -96,6 +100,7 @@
           enable_gzip = true;
         };
         analytics.reporting_enabled = false;
+        security.secret_key = "$__file{${config.sops.secrets.grafana_secret_key.path}}";
       };
       provision = {
         enable = true;

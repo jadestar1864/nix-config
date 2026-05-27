@@ -5,7 +5,12 @@
 }: {
   den.aspects.devops = {
     includes = [(den.batteries.user-shell "zsh")];
-    homeManager = {pkgs, ...}: {
+    homeManager = {
+      config,
+      pkgs,
+      ...
+    }: {
+      programs.zsh.dotDir = "${config.xdg.configHome}/zsh";
       programs.yazi.settings = {
         open.rules = [
           {

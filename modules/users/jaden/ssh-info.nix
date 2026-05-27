@@ -16,7 +16,7 @@
       };
 
       programs.ssh = {
-        matchBlocks = let
+        settings = let
           defaults = {
             forwardAgent = false;
             addKeysToAgent = "no";
@@ -73,7 +73,7 @@
           "dokja-admin" =
             defaults
             // {
-              hostname = config.programs.ssh.matchBlocks.dokja.data.hostname;
+              hostname = config.programs.ssh.settings.dokja.data.hostname;
               user = "admin";
               identitiesOnly = true;
               identityFile = config.sops.secrets.dokja_admin_access_privatekey.path;
@@ -81,7 +81,7 @@
           "teemo-admin" =
             defaults
             // {
-              hostname = config.programs.ssh.matchBlocks.teemo.data.hostname;
+              hostname = config.programs.ssh.settings.teemo.data.hostname;
               user = "admin";
               identitiesOnly = true;
               identityFile = config.sops.secrets.teemo_admin_access_privatekey.path;
@@ -89,7 +89,7 @@
           "aesop-admin" =
             defaults
             // {
-              hostname = config.programs.ssh.matchBlocks.aesop.data.hostname;
+              hostname = config.programs.ssh.settings.aesop.data.hostname;
               user = "admin";
               identitiesOnly = true;
               identityFile = config.sops.secrets.aesop_admin_access_privatekey.path;

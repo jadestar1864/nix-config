@@ -1,6 +1,6 @@
 {
   den.aspects.aesop.nixos = {
-    services.jellyseerr = {
+    services.seerr = {
       enable = true;
       openFirewall = true;
     };
