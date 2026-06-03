@@ -21,12 +21,13 @@
       };
     };
     gaming.includes = [
-      (den.lib.policy.when ({host, ...}: host.hasAspect den.aspects.laptop) {
-        nixos.services.tlp.settings = {
-          TLP_DEFAULT_MODE = "AC";
-          TLP_PERSISTENT_DEFAULT = 1;
-        };
-      })
+      ({host, ...}: (lib.mkIf (host.hasAspect den.aspects.laptop)
+        {
+          nixos.services.tlp.settings = {
+            TLP_DEFAULT_MODE = "AC";
+            TLP_PERSISTENT_DEFAULT = 1;
+          };
+        }))
     ];
   };
 }
