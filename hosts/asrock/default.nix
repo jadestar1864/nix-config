@@ -43,5 +43,8 @@
         teemo.hostname = "192.168.1.3";
       };
     };
+    provides.to-users.homeManager = {pkgs, ...}: {
+      home.packages = [pkgs.ente-desktop];
+    };
   };
 }
