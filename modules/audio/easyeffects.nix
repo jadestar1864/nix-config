@@ -1,4 +1,5 @@
 {lib, ...}: {
+  /*
   den.aspects.pc.homeManager = {
     config,
     pkgs,
@@ -22,4 +23,5 @@
       "${config.xdg.configHome}/easyeffects/output/Perfect EQ.json".source = "${easyeffects-presets}/Perfect EQ.json";
     };
   };
+  */
 }
