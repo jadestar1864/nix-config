@@ -20,6 +20,7 @@
         };
       };
     };
+    /*
     gaming.includes = [
       (den.lib.policy.when ({host, ...}: host.hasAspect den.aspects.laptop) {
         nixos.services.tlp.settings = {
@@ -28,5 +29,6 @@
         };
       })
     ];
+    */
   };
 }
