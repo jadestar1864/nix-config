@@ -1,5 +1,6 @@
 {
   den.aspects.teemo.nixos = {
+    /*
     networking.firewall.interfaces.wg0.allowedTCPPorts = [
       18080
       18083
@@ -29,5 +30,6 @@
         add-priority-node=nodes.hashvault.pro:18080
       '';
     };
+    */
   };
 }

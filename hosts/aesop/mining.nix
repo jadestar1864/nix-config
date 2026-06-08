@@ -4,6 +4,7 @@
     lib,
     ...
   }: {
+    /*
     networking.firewall.interfaces.wg0.allowedTCPPorts = [37888];
 
     boot.kernel.sysctl = {
@@ -51,5 +52,6 @@
     };
 
     systemd.services.xmrig.after = ["p2pool.service"];
+    */
   };
 }
