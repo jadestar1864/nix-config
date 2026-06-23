@@ -66,7 +66,7 @@
         matchConfig.Name = "enp1s0";
         address = ["192.168.1.213/24"];
         routes = [
-          {Gateway = "192.168.1.254";}
+          {Gateway = "192.168.1.1";}
         ];
         linkConfig.RequiredForOnline = "routable";
       };
