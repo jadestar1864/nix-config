@@ -98,7 +98,7 @@
         matchConfig.Name = "end0";
         address = ["192.168.1.3/24"];
         routes = [
-          {Gateway = "192.168.1.254";}
+          {Gateway = "192.168.1.1";}
         ];
         linkConfig.RequiredForOnline = "routable";
       };
