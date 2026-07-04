@@ -72,6 +72,8 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
     den.url = "github:denful/den";
+
+    anime-games-launcher.url = "github:an-anime-team/anime-games-launcher";
   };
 
   outputs = inputs:
