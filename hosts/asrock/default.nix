@@ -35,6 +35,11 @@
           amd_performance_level = "auto";
         };
       };
+
+      services.udev.extraRules = ''
+        # Disable waking up from peripherals
+        ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c52b", ATTR{power/wakeup}="disabled"
+      '';
     };
     homeManager = {
       programs.ssh.settings = {
