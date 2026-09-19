@@ -9,10 +9,11 @@
       options = [
         "nofail"
         "x-systemd.device-timeout=0"
+        "discard"
       ];
     };
     environment.etc.crypttab.text = ''
-      media UUID=a0ae2a60-be3f-45b6-b410-96bf0065bc30 /root/external_ssd.key nofail
+      media UUID=a0ae2a60-be3f-45b6-b410-96bf0065bc30 /root/external_ssd.key nofail,allow-discards
     '';
 
     # Containers that need to wait for /data to mount
