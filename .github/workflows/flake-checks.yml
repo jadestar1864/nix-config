@@ -29,7 +29,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v7
-      - uses: cachix/install-nix-action@v31
+      - uses: cachix/install-nix-action@v32
         with:
           extra_nix_config: |
             extra-substituters = https://cache.jadestar.dev
@@ -69,7 +69,7 @@ jobs:
           hatchet-protocol: carve
       - name: Install Nix
         if: steps.skip_check.outputs.should_skip != 'true'
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@v32
         with:
           extra_nix_config: |
             extra-substituters = https://cache.jadestar.dev
